@@ -1,0 +1,29 @@
+postsubmits:
+  kubesphere/kubesphere:
+  - name: pull-kubesphere-build-image
+    labels:
+      preset-go-build-cache: "true"
+      preset-docker-sock: "true"
+    always_run: true
+    branches:
+    - ^master$
+    decorate: true
+    path_alias: kubesphere.io/kubesphere
+    spec:
+      containers:
+      - command:
+        - entrypoint
+        - bash
+        - -e
+        - -c
+        - "make container"
+        image: kubesphere/build-tools:master-latest
+        name: ""
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: "4"
+            memory: 2Gi
+          securityContext:
+            privileged: true

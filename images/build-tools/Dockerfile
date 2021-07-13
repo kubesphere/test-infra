@@ -23,12 +23,12 @@ ARG GOLANG_IMAGE=golang:1.16.5
 FROM ${GOLANG_IMAGE} as binary_tools_context
 
 # Versions of tools we used
+ENV ETCD_VERSION=v3.4.16
 ENV GOIMPORTS_VERSION=v0.1.0
 ENV HELM3_VERSION=v3.4.2
 ENV K8S_CODE_GENERATOR_VERSION=1.18.16
 ENV KIND_VERSION=v0.11.1
-ENV KUBEBUILDER_VERSION=v2.3.1
-ENV KUBECTL_VERSION=1.20.4
+ENV KUBERNETES_VERSION=v1.19.8
 ENV SHELLCHECK_VERSION=v0.7.1
 ENV SU_EXEC_VERSION=0.2
 ENV YQ_VERSION=3.3.0
@@ -42,6 +42,10 @@ ENV GOPATH=/tmp/go
 ENV OUTDIR=/out
 RUN mkdir -p ${OUTDIR}/usr/bin
 RUN mkdir -p ${OUTDIR}/usr/local
+RUN mkdir -p ${OUTDIR}/usr/local/bin
+
+# Some kubebuilder e2e tests still use the following path
+RUN mkdir -p ${OUTDIR}/usr/local/kubebuilder/bin
 
 # Update distro and install dependencies
 RUN apt update && apt install -y --no-install-recommends \
@@ -58,12 +62,18 @@ RUN apt update && apt install -y --no-install-recommends \
 RUN go install golang.org/x/tools/cmd/goimports@${GOIMPORTS_VERSION}
 RUN go install sigs.k8s.io/kind@${KIND_VERSION}
 
-# Install kubebuilder
-RUN curl -L -o kubebuilder https://go.kubebuilder.io/dl/${KUBEBUILDER_VERSION}/$(go env GOOS)/$(go env GOARCH) && \
-    chmod +x kubebuilder && \
-    mv kubebuilder /usr/local/bin/
+# Install etcd
+ADD https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz /tmp
+RUN tar -xvzf /tmp/etcd-${ETCD_VERSION}-linux-amd64.tar.gz -C /tmp
+RUN mv /tmp/etcd-${ETCD_VERSION}-linux-amd64/etcd ${OUTDIR}/usr/local/kubebuilder/bin/
 
-    # go install does not seem to be compatible with this pesky code-generator repo
+# Install kube-apiserver and kubectl
+ADD https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-server-linux-amd64.tar.gz /tmp
+RUN tar -xvzf kubernetes-server-linux-amd64.tar.gz -C /tmp
+RUN mv /tmp/kubernetes/server/bin/kube-apiserver ${OUTDIR}/usr/local/kubebuilder/bin/
+RUN mv /tmp/kubernetes/server/bin/kubectl ${OUTDIR}/usr/local/kubebuilder/bin/
+
+# go install does not seem to be compatible with this pesky code-generator repo
 # Install the code generator tools, and hopefully only these tools, this way
 RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/defaulter-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
 RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/client-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
@@ -91,40 +101,14 @@ WORKDIR /tmp/su-exec-${SU_EXEC_VERSION}
 RUN make
 RUN cp -a su-exec ${OUTDIR}/usr/bin
 
-# Kubectl
-ADD https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl ${OUTDIR}/usr/bin/kubectl
-RUN chmod 555 ${OUTDIR}/usr/bin/kubectl
+# move installed go tools
+RUN mv /tmp/go/bin/* ${OUTDIR}/usr/bin
 
 # Cleanup stuff we don't need in the final image
 RUN rm -fr /usr/local/go/doc
 RUN rm -fr /usr/local/go/test
 RUN rm -fr /usr/local/go/api
 RUN rm -fr /usr/local/go/bin/godoc
-RUN rm -fr /usr/local/go/bin/gofmt
-
-################
-# NodeJS
-################
-
-FROM ubuntu:focal as nodejs_tools_context
-
-ENV NODEJS_VERSION=12.18.0
-ENV YARN_VERSION=1.22.4
-ENV MARKDOWN_SPELLCHECK_VERSION=v1.3.1
-
-ADD https://nodejs.org/download/release/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.gz /tmp
-RUN tar -xzf /tmp/node-v${NODEJS_VERSION}-linux-x64.tar.gz --strip-components=1 -C /usr/local
-
-ADD https://nodejs.org/download/release/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-headers.tar.gz /tmp
-RUN tar -xzf /tmp/node-v${NODEJS_VERSION}-headers.tar.gz --strip-components=1 -C /usr/local
-
-RUN npm init -y
-RUN npm install --production --global \
-    yarn@"${YARN_VERSION}"
-
-# Clean up stuff we don't need in the final image
-RUN rm -rf /usr/local/sbin
-RUN rm -rf /usr/local/share
 
 
 ###########
@@ -147,6 +131,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     gnupg-agent \
+    build-essential \
     software-properties-common \
     ca-certificates \
     gcc \
@@ -177,14 +162,6 @@ RUN rm -fr /usr/share/locale
 RUN rm -fr /usr/share/man
 RUN rm -fr /tmp/*
 
-# Run dockerd in CI
-COPY docker-entrypoint.sh /usr/local/bin/entrypoint
-RUN chmod +x /usr/local/bin/entrypoint
-
-# Run config setup in local environments
-# COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-
-
 ###############
 # Final Image
 ###############
@@ -210,18 +187,22 @@ ENV GOROOT=/usr/local/go
 ENV GOPATH=/go
 ENV GOCACHE=/gocache
 ENV GOBIN=/gobin
-ENV PATH=/usr/local/go/bin:/gobin:/usr/local/google-cloud-sdk/bin:$PATH
+ENV PATH=/usr/local/go/bin:/gobin:$PATH
 
 # Create the file system
 COPY --from=base_os_context / /
 COPY --from=binary_tools_context /out/ /
 COPY --from=binary_tools_context /usr/local/go /usr/local/go
 
-COPY --from=nodejs_tools_context /usr/local/bin /usr/local/bin
-COPY --from=nodejs_tools_context /usr/local/lib/node_modules /usr/local/lib/node_modules
+# COPY --from=nodejs_tools_context /usr/local/bin /usr/local/bin
+# COPY --from=nodejs_tools_context /usr/local/lib/node_modules /usr/local/lib/node_modules
 # COPY --from=nodejs_tools_context /node_modules /node_modules
 
 COPY bashrc /home/.bashrc
+
+# Run dockerd in CI
+COPY entrypoint /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint
 
 # mountpoints are mandatory for any host mounts.
 # mountpoints in /config are special.
@@ -246,4 +227,4 @@ RUN chmod 777 /go && \
 
 WORKDIR /
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/entrypoint"]

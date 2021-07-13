@@ -26,7 +26,7 @@ DATE=$(date +%Y-%m-%dT%H-%M-%S)
 BRANCH=master
 VERSION="${BRANCH}-${DATE}"
 
-${CONTAINER_CLI} ${CONTAINER_BUILDER}  --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:${VERSION}" -t "${HUB}/build-tools:${BRANCH}-latest" .
+${CONTAINER_CLI} ${CONTAINER_BUILDER}  --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:${BRANCH}-latest" .
 
 if [[ -z "${DRY_RUN:-}" ]]; then
   ${CONTAINER_CLI} push "${HUB}/build-tools:${VERSION}"

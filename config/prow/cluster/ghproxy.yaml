@@ -24,15 +24,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
-  # gce-ssd-retain is specified in config/prow/cluster/gce-ssd-retain_storageclass.yaml
-  #
-  # If you are setting up your own Prow instance you can do any of the following:
-  # 1) Delete this to use the default storage class for your cluster.
-  # 2) Specify your own storage class.
-  # 3) If you are using GKE you can use the gce-ssd-retain storage class. It can be
-  #    created with: `kubectl create -f config/prow/cluster/gce-ssd-retain_storageclass.yaml
-  storageClassName: gce-ssd-retain
+      storage: 10Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -74,8 +66,6 @@ spec:
         operator: "Equal"
         value: "ghproxy"
         effect: "NoSchedule"
-      nodeSelector:
-        dedicated: "ghproxy"
 ---
 apiVersion: v1
 kind: Service

@@ -42,8 +42,9 @@ spec:
         - --github-token-path=/etc/github/oauth
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
-        - --history-uri=gs://k8s-prow/tide-history.json
-        - --status-path=gs://k8s-prow/tide-status-checkpoint.yaml
+        - --s3-credentials-file=/etc/s3-credentials/service-account.json
+        - --history-uri=s3://kubesphere-prow/tide-history.json
+        - --status-path=s3://kubesphere-prow/tide-status-checkpoint.yaml
         ports:
         - name: http
           containerPort: 8888
@@ -57,6 +58,9 @@ spec:
         - name: job-config
           mountPath: /etc/job-config
           readOnly: true
+        - name: s3-credentials
+          mountPath: /etc/s3-credentials
+          readOnly: true
       volumes:
       - name: oauth
         secret:
@@ -67,3 +71,6 @@ spec:
       - name: job-config
         configMap:
           name: job-config
+      - name: s3-credentials
+        secret:
+          secretName: s3-credentials
