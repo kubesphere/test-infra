@@ -1,0 +1,107 @@
+# Plugin repository allowlist.
+# Keys: Full repo name: "org/repo".
+# Values: List of plugins to run against the repo.
+
+---
+triggers:
+- repos:
+  - kubesphere
+  - kubesphere-sigs
+
+config_updater:
+  maps:
+    config/prow/config.yaml:
+      name: config
+    config/prow/plugins.yaml:
+      name: plugins
+    config/jobs/**/*.yaml:
+      name: job-config
+      gzip: true
+
+slack:
+  mergewarnings:
+  - repos:
+    - kubesphere/kubesphere
+    - kubesphere/console
+    - kubesphere/ks-installer
+    - kubesphere/kubekey
+    channels:
+    - test-and-release
+
+lgtm:
+- repos:
+  - istio
+  review_acts_as_lgtm: true
+
+# Lower bounds in number of lines changed; XS is assumed to be zero.
+size:
+  s:   10
+  m:   30
+  l:   100
+  xl:  500
+  xxl: 1000
+
+plugins:
+  kubesphere:
+    plugins:
+    - approve
+    - assign
+    - cla
+    - golint
+    - help
+    - hold
+    - label
+    - lgtm
+    - pony
+    - cat
+    - lifecycle
+    - retitle
+    - size
+    - skip
+    - slackevents
+    - trigger
+    - verify-owners
+    - wip
+
+  kubesphere-sigs:
+    plugins:
+    - approve
+    - assign
+    - cla
+    - golint
+    - help
+    - hold
+    - label
+    - lgtm
+    - lifecycle
+    - retitle
+    - size
+    - skip
+    - slackevents
+    - trigger
+    - verify-owners
+    - wip
+
+  kubesphere/kubesphere:
+    plugins:
+    - milestone
+    - milestonestatus
+    - release-note
+    - require-matching-label
+
+  kubesphere/console:
+    plugins:
+    - milestone
+    - milestonestatus
+    - release-note
+    - require-matching-label
+
+external_plugins:
+  kubesphere:
+  - name: cherrypicker
+    events:
+    - issue_comment
+    - pull_request
+  - name: needs-rebase
+    events:
+    - pull_request

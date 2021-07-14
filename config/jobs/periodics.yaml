@@ -1,0 +1,24 @@
+periodics:
+- interval: 24h
+  name: kubesphere-periodic-build-image
+  labels:
+    preset-go-build-cache: "true"
+    preset-docker-sock: "true"
+  spec:
+    containers:
+    - image: kubesphere/build-tools:master-latest
+      command:
+      - entrypoint
+      - bash
+      - -e
+      - -c
+      - "make container-push"
+      # docker-in-docker needs privileged mode
+      securityContext:
+        priviledged: true
+      resources:
+        requests:
+          cpu: 2
+          memory: "2Gi"
+  annotations:
+    description: "Periodic builds and pushs"

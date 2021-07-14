@@ -1,0 +1,65 @@
+postsubmits:
+  kubesphere/test-infra:
+  - name: post-test-infra-deploy-prow
+    cluster: test-infra-trusted
+    run_if_changed: 'config/prow/cluster/'
+    decorate: true
+    branches:
+    - ^master$
+    max_concurrency: 1
+    reporter_config:
+      slack:
+        channel: "prow"
+        job_states_to_report:
+        - success
+        - failure
+        - aborted
+        - error
+        report_template: 'Deploying prow: {{.Status.State}}. <{{.Spec.Refs.BaseLink}}|Commit {{.Spec.Refs.BaseSHA}}> <{{.Status.URL}}|View logs> <https://testgrid.k8s.io/sig-testing-prow#deploy-prow|Job history on Testgrid>'
+    spec:
+      serviceAccountName: deployer
+      containers:
+      - image: gcr.io/k8s-testimages/gcloud-bazel:v20210128-v0.6-11-gf1c6399
+        command:
+        - prow/deploy.sh
+        args:
+        - --confirm
+        - --config=trusted
+
+  - name: post-test-infra-reconcile-hmacs
+    run_if_changed: 'config/prow/config.yaml'
+    decorate: true
+    branches:
+    - master
+    spec:
+      containers:
+      - image: gcr.io/k8s-prow/hmac:v20200622-168a90f1b0
+        command:
+        - /hmac
+        args:
+        - --config-path=config/prow/config.yaml
+        - --hook-url=https://prow.kubesphere.io/hook
+        - --hmac-token-secret-name=hmac-token
+        - --hmac-token-key=hmac
+        - --kubeconfig=/etc/kubeconfig/config
+        - --kubeconfig-context=prow-services
+        - --github-token-path=/etc/github/oauth
+        - --github-endpoint=http://ghproxy.default.svc.cluster.local
+        - --github-endpoint=https://api.github.com
+        - --dry-run=false
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /etc/kubeconfig
+          readOnly: true
+        - name: oauth
+          mountPath: /etc/github
+          readOnly: true
+      volumes:
+      - name: kubeconfig
+        secret:
+          defaultMode: 420
+          secretName: kubeconfig
+      - name: oauth
+        secret:
+          defaultMode: 420
+          secretName: oauth-token
