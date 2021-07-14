@@ -4,11 +4,11 @@ log_level: debug
 
 plank:
   job_url_prefix_config:
-    "*": https://prow.gozry.com/view/
+    "*": https://prow.kubesphere.io/view/
   report_templates:
     '*': >-
-        [Full PR test history](https://prow.gozry.com/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}).
-        [Your PR dashboard](https://prow.gozry.com/pr?query=is:pr+state:open+author:{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).
+        [Full PR test history](https://prow.kubesphere.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}).
+        [Your PR dashboard](https://prow.kubesphere.io/pr?query=is:pr+state:open+author:{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).
   default_decoration_configs:
     "*":
       gcs_configuration:
@@ -72,7 +72,7 @@ tide:
     kubesphere/community: squash
     kubesphere/ks-jenkins: squash
     kubesphere/prow-tutorial: squash
-  target_url: https://prow.gozry.com
+  target_url: https://prow.kubesphere.io
   queries:
   - orgs:
     - kubesphere

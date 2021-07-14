@@ -47,13 +47,14 @@ spec:
         - --tide-url=http://tide/
         - --hook-url=http://hook:8888/plugin-help
         - --plugin-config=/etc/plugins/plugins.yaml
-        - --redirect-http-to=prow.gozry.com
+        - --redirect-http-to=prow.kubesphere.io
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         - --spyglass=true
         - --github-token-path=/etc/github/oauth
         - --github-endpoint=http://ghproxy
         - --github-endpoint=https://api.github.com
+        - --s3-credentials-file=/etc/s3-credentials/service-account.json
         env:
         # Use KUBECONFIG envvar rather than --kubeconfig flag in order to provide multiple configs to merge.
         - name: KUBECONFIG
@@ -73,6 +74,9 @@ spec:
           readOnly: true
         - name: plugins
           mountPath: /etc/plugins
+          readOnly: true
+        - name: s3-credentials
+          mountPath: /etc/s3-credentials
           readOnly: true
         livenessProbe:
           httpGet:
@@ -104,3 +108,6 @@ spec:
       - name: plugins
         configMap:
           name: plugins
+      - name: s3-credentials
+        secret:
+          secretName: s3-credentials

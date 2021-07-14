@@ -38,7 +38,7 @@ postsubmits:
         - /hmac
         args:
         - --config-path=config/prow/config.yaml
-        - --hook-url=https://prow.gozry.com/hook
+        - --hook-url=https://prow.kubesphere.io/hook
         - --hmac-token-secret-name=hmac-token
         - --hmac-token-key=hmac
         - --kubeconfig=/etc/kubeconfig/config

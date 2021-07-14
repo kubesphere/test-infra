@@ -27,7 +27,7 @@ spec:
       port:
         number: 80
   rules:
-  - host: prow.gozry.com
+  - host: prow.kubesphere.io
     http:
       paths:
       - path: /
