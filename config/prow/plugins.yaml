@@ -6,7 +6,7 @@
 triggers:
 - repos:
   - kubesphere
-  - kubesphere-sig
+  - kubesphere-sigs
 
 config_updater:
   maps:
@@ -52,6 +52,8 @@ plugins:
     - hold
     - label
     - lgtm
+    - pony
+    - cat
     - lifecycle
     - retitle
     - size
@@ -61,7 +63,7 @@ plugins:
     - verify-owners
     - wip
 
-  kubesphere-sig:
+  kubesphere-sigs:
     plugins:
     - approve
     - assign

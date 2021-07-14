@@ -22,8 +22,6 @@ presubmits:
           requests:
             cpu: "4"
             memory: 2Gi
-        # securityContext:
-        #   privileged: true
   - name: pull-kubesphere-verify
     always_run: true
     branches:

@@ -8,12 +8,11 @@ plank:
   report_templates:
     '*': >-
         [Full PR test history](https://prow.gozry.com/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}).
-        [Your PR dashboard](https://prow.gozry.com/pr?query=is:pr+state:open+author:{{with
-        index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).
+        [Your PR dashboard](https://prow.gozry.com/pr?query=is:pr+state:open+author:{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).
   default_decoration_configs:
     "*":
       gcs_configuration:
-        bucket: s3://prow-logs
+        bucket: s3://kubesphere-prow
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
       utility_images:
@@ -89,7 +88,7 @@ tide:
     - do-not-merge/work-in-progress
     - needs-rebase
   - orgs:
-    - kubesphere-sig
+    - kubesphere-sigs
     labels:
     - lgtm
     - approved
