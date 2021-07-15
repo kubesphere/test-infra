@@ -43,8 +43,8 @@ spec:
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         - --s3-credentials-file=/etc/s3-credentials/service-account.json
-        - --history-uri=s3://kubesphere-prow/tide-history.json
-        - --status-path=s3://kubesphere-prow/tide-status-checkpoint.yaml
+        - --history-uri=s3://prow-logs/tide-history.json
+        - --status-path=s3://prow-logs/tide-status-checkpoint.yaml
         ports:
         - name: http
           containerPort: 8888

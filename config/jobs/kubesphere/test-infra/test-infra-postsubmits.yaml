@@ -1,7 +1,6 @@
 postsubmits:
   kubesphere/test-infra:
   - name: post-test-infra-deploy-prow
-    cluster: test-infra-trusted
     run_if_changed: 'config/prow/cluster/'
     decorate: true
     branches:
