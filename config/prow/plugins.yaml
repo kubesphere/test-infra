@@ -30,8 +30,11 @@ slack:
 
 lgtm:
 - repos:
-  - istio
-  review_acts_as_lgtm: true
+  - kubesphere/kubesphere
+  - kubesphere/console
+  - kubesphere/ks-installer
+  - kubesphere/kubekey
+  store_tree_hash: true
 
 # Lower bounds in number of lines changed; XS is assumed to be zero.
 size:
