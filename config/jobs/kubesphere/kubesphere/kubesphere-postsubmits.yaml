@@ -4,6 +4,7 @@ postsubmits:
     labels:
       preset-go-build-cache: "true"
       preset-docker-sock: "true"
+      preset-docker-credential: "true"
     always_run: true
     branches:
     - ^master$
@@ -16,7 +17,7 @@ postsubmits:
         - bash
         - -e
         - -c
-        - "make container"
+        - "make container-push"
         image: kubesphere/build-tools:master-latest
         name: ""
         resources:
@@ -30,6 +31,13 @@ postsubmits:
 
 periodics:
 - interval: 24h
+  decorate: true
+  branches: master
+  extra_refs:
+  - org: kubesphere
+    repo: kubesphere
+    base_ref: master
+    path_alias: kubesphere.io/kubesphere
   name: kubesphere-periodic-build-image
   labels:
     preset-go-build-cache: "true"
@@ -43,7 +51,7 @@ periodics:
       - bash
       - -e
       - -c
-      - "make container-push"
+      - "make container-cross-push"
       # docker-in-docker needs privileged mode
       securityContext:
         priviledged: true
