@@ -3,59 +3,65 @@ kind: ServiceAccount
 metadata:
   namespace: default
   name: "sinker"
+  labels:
+    app.kubernetes.io/part-of: prow
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: default
   name: "sinker"
+  labels:
+    app.kubernetes.io/part-of: prow
 rules:
   - apiGroups:
-    - "prow.k8s.io"
+      - "prow.k8s.io"
     resources:
-    - prowjobs
+      - prowjobs
     verbs:
-    - delete
-    - list
-    - watch
-    - get
+      - delete
+      - list
+      - watch
+      - get
   - apiGroups:
-    - coordination.k8s.io
+      - coordination.k8s.io
     resources:
-    - leases
+      - leases
     resourceNames:
-    - prow-sinker-leaderlock
+      - prow-sinker-leaderlock
     verbs:
-    - get
-    - update
+      - get
+      - update
   - apiGroups:
-    - coordination.k8s.io
+      - coordination.k8s.io
     resources:
-    - leases
+      - leases
     verbs:
-    - create
+      - create
   - apiGroups:
-    - ""
+      - ""
     resources:
-    - configmaps
+      - configmaps
     resourceNames:
-    - prow-sinker-leaderlock
+      - prow-sinker-leaderlock
     verbs:
-    - get
-    - update
+      - get
+      - update
   - apiGroups:
-    - ""
+      - ""
     resources:
-    - configmaps
-    - events
+      - configmaps
+      - events
     verbs:
-    - create
+      - create
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: test-pods
   name: "sinker"
+  labels:
+    app.kubernetes.io/part-of: prow
 rules:
   - apiGroups:
       - ""
@@ -73,24 +79,28 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: default
   name: "sinker"
+  labels:
+    app.kubernetes.io/part-of: prow
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: "sinker"
 subjects:
-- kind: ServiceAccount
-  name: "sinker"
+  - kind: ServiceAccount
+    name: "sinker"
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: test-pods
   name: "sinker"
+  labels:
+    app.kubernetes.io/part-of: prow
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: "sinker"
 subjects:
-- kind: ServiceAccount
-  name: "sinker"
-  namespace: default
+  - kind: ServiceAccount
+    name: "sinker"
+    namespace: default

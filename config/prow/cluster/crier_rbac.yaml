@@ -11,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
----
 kind: ServiceAccount
 apiVersion: v1
 metadata:
@@ -20,68 +18,78 @@ metadata:
     iam.gke.io/gcp-service-account: control-plane@k8s-prow.iam.gserviceaccount.com
   name: crier
   namespace: default
+  labels:
+    app.kubernetes.io/part-of: prow
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: default
   name: crier
+  labels:
+    app.kubernetes.io/part-of: prow
 rules:
-- apiGroups:
-    - "prow.k8s.io"
-  resources:
-    - "prowjobs"
-  verbs:
-    - "get"
-    - "watch"
-    - "list"
-    - "patch"
+  - apiGroups:
+      - "prow.k8s.io"
+    resources:
+      - "prowjobs"
+    verbs:
+      - "get"
+      - "watch"
+      - "list"
+      - "patch"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: test-pods
   name: crier
+  labels:
+    app.kubernetes.io/part-of: prow
 rules:
-- apiGroups:
-    - ""
-  resources:
-    - "pods"
-    - "events"
-  verbs:
-    - "get"
-    - "list"
-- apiGroups:
-    - ""
-  resources:
-    - "pods"
-  verbs:
-    - "patch"
+  - apiGroups:
+      - ""
+    resources:
+      - "pods"
+      - "events"
+    verbs:
+      - "get"
+      - "list"
+  - apiGroups:
+      - ""
+    resources:
+      - "pods"
+    verbs:
+      - "patch"
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: crier-namespaced
   namespace: default
+  labels:
+    app.kubernetes.io/part-of: prow
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: crier
 subjects:
-- kind: ServiceAccount
-  name: crier
-  namespace: default
+  - kind: ServiceAccount
+    name: crier
+    namespace: default
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: crier-namespaced
   namespace: test-pods
+  labels:
+    app.kubernetes.io/part-of: prow
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: crier
 subjects:
-- kind: ServiceAccount
-  name: crier
-  namespace: default
+  - kind: ServiceAccount
+    name: crier
+    namespace: default

@@ -18,12 +18,39 @@ postsubmits:
     spec:
       serviceAccountName: deployer
       containers:
-      - image: gcr.io/k8s-testimages/gcloud-bazel:v20210128-v0.6-11-gf1c6399
+      - image: kubesphere/build-tools:master-latest
         command:
-        - prow/deploy.sh
-        args:
-        - --confirm
-        - --config=trusted
+        - make 
+        - -C
+        - config/prow
+        - deploy
+  
+  - name: post-test-infra-update-config
+    run_if_changed: '^config/(jobs/.*\.yaml$|prow/[\w_]*.yaml$)'
+    decorate: true
+    branches:
+    - ^master$
+    max_concurrency: 1
+    reporter_config:
+      slack:
+        channel: "prow"
+        job_states_to_report:
+        - success
+        - failure
+        - aborted
+        - error
+        report_template: 'Update prow config: {{.Status.State}}. <{{.Spec.Refs.BaseLink}}|Commit {{.Spec.Refs.BaseSHA}}> <{{.Status.URL}}|View logs> <https://testgrid.k8s.io/sig-testing-prow#deploy-prow|Job history on Testgrid>'
+    spec:
+      serviceAccountName: deployer
+      containers:
+      - image: kubesphere/build-tools:master-latest
+        command:
+        - make 
+        - -C
+        - config/prow
+        - update-job-config
+        - update-config
+        - update-plugins
 
   - name: post-test-infra-reconcile-hmacs
     run_if_changed: 'config/prow/config.yaml'

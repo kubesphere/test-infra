@@ -19,6 +19,7 @@ metadata:
   name: deck
   labels:
     app: deck
+    app.kubernetes.io/part-of: prow
 spec:
   replicas: 3
   strategy:
@@ -37,77 +38,77 @@ spec:
       serviceAccountName: deck
       terminationGracePeriodSeconds: 30
       containers:
-      - name: deck
-        image: gcr.io/k8s-prow/deck:v20210615-cf184f2204
-        imagePullPolicy: Always
-        ports:
-          - name: http
-            containerPort: 8080
-        args:
-        - --tide-url=http://tide/
-        - --hook-url=http://hook:8888/plugin-help
-        - --plugin-config=/etc/plugins/plugins.yaml
-        - --redirect-http-to=prow.kubesphere.io
-        - --config-path=/etc/config/config.yaml
-        - --job-config-path=/etc/job-config
-        - --spyglass=true
-        - --github-token-path=/etc/github/oauth
-        - --github-endpoint=http://ghproxy
-        - --github-endpoint=https://api.github.com
-        - --s3-credentials-file=/etc/s3-credentials/service-account.json
-        env:
-        # Use KUBECONFIG envvar rather than --kubeconfig flag in order to provide multiple configs to merge.
-        - name: KUBECONFIG
-          value: "/etc/kubeconfig/config"
-        volumeMounts:
-        - mountPath: /etc/kubeconfig
-          name: kubeconfig
-          readOnly: true
-        - name: config
-          mountPath: /etc/config
-          readOnly: true
-        - name: job-config
-          mountPath: /etc/job-config
-          readOnly: true
-        - name: oauth-token
-          mountPath: /etc/github
-          readOnly: true
-        - name: plugins
-          mountPath: /etc/plugins
-          readOnly: true
-        - name: s3-credentials
-          mountPath: /etc/s3-credentials
-          readOnly: true
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8081
-          initialDelaySeconds: 3
-          periodSeconds: 3
-        readinessProbe:
-          httpGet:
-            path: /healthz/ready
-            port: 8081
-          initialDelaySeconds: 10
-          periodSeconds: 3
-          timeoutSeconds: 600
+        - name: deck
+          image: gcr.io/k8s-prow/deck:v20210615-cf184f2204
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          args:
+            - --tide-url=http://tide/
+            - --hook-url=http://hook:8888/plugin-help
+            - --plugin-config=/etc/plugins/plugins.yaml
+            - --redirect-http-to=prow.kubesphere.io
+            - --config-path=/etc/config/config.yaml
+            - --job-config-path=/etc/job-config
+            - --spyglass=true
+            - --github-token-path=/etc/github/oauth
+            - --github-endpoint=http://ghproxy
+            - --github-endpoint=https://api.github.com
+            - --s3-credentials-file=/etc/s3-credentials/service-account.json
+          env:
+            # Use KUBECONFIG envvar rather than --kubeconfig flag in order to provide multiple configs to merge.
+            - name: KUBECONFIG
+              value: "/etc/kubeconfig/config"
+          volumeMounts:
+            - mountPath: /etc/kubeconfig
+              name: kubeconfig
+              readOnly: true
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            - name: job-config
+              mountPath: /etc/job-config
+              readOnly: true
+            - name: oauth-token
+              mountPath: /etc/github
+              readOnly: true
+            - name: plugins
+              mountPath: /etc/plugins
+              readOnly: true
+            - name: s3-credentials
+              mountPath: /etc/s3-credentials
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz/ready
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            timeoutSeconds: 600
       volumes:
-      - name: oauth-token
-        secret:
-          secretName: oauth-token
-      - name: kubeconfig
-        secret:
-          defaultMode: 420
-          secretName: kubeconfig
-      - name: config
-        configMap:
-          name: config
-      - name: job-config
-        configMap:
-          name: job-config
-      - name: plugins
-        configMap:
-          name: plugins
-      - name: s3-credentials
-        secret:
-          secretName: s3-credentials
+        - name: oauth-token
+          secret:
+            secretName: oauth-token
+        - name: kubeconfig
+          secret:
+            defaultMode: 420
+            secretName: kubeconfig
+        - name: config
+          configMap:
+            name: config
+        - name: job-config
+          configMap:
+            name: job-config
+        - name: plugins
+          configMap:
+            name: plugins
+        - name: s3-credentials
+          secret:
+            secretName: s3-credentials
