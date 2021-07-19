@@ -24,7 +24,7 @@ postsubmits:
         - -C
         - config/prow
         - deploy
-  
+
   - name: post-test-infra-update-config
     run_if_changed: '^config/(jobs/.*\.yaml$|prow/[\w_]*.yaml$)'
     decorate: true

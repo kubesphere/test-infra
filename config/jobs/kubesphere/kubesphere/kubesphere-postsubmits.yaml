@@ -34,6 +34,7 @@ periodics:
   labels:
     preset-go-build-cache: "true"
     preset-docker-sock: "true"
+    preset-docker-credential: "true"
   spec:
     containers:
     - image: kubesphere/build-tools:master-latest
