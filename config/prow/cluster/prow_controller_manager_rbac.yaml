@@ -28,48 +28,48 @@ metadata:
   labels:
     app.kubernetes.io/part-of: prow
 rules:
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    resourceNames:
-      - prow-controller-manager-leader-lock
-    verbs:
-      - get
-      - update
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    verbs:
-      - create
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-    resourceNames:
-      - prow-controller-manager-leader-lock
-    verbs:
-      - get
-      - update
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-      - events
-    verbs:
-      - create
-  - apiGroups:
-      - prow.k8s.io
-    resources:
-      - prowjobs
-    verbs:
-      - get
-      - update
-      - list
-      - watch
-      - update
-      - patch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  resourceNames:
+  - prow-controller-manager-leader-lock
+  verbs:
+  - get
+  - update
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  resourceNames:
+  - prow-controller-manager-leader-lock
+  verbs:
+  - get
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - events
+  verbs:
+  - create
+- apiGroups:
+  - prow.k8s.io
+  resources:
+  - prowjobs
+  verbs:
+  - get
+  - update
+  - list
+  - watch
+  - update
+  - patch
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
@@ -79,17 +79,17 @@ metadata:
   labels:
     app.kubernetes.io/part-of: prow
 rules:
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - create
-      - delete
-      - list
-      - watch
-      - get
-      - patch
+- apiGroups:
+   - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - list
+  - watch
+  - get
+  - patch
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -103,8 +103,8 @@ roleRef:
   kind: Role
   name: "prow-controller-manager"
 subjects:
-  - kind: ServiceAccount
-    name: "prow-controller-manager"
+- kind: ServiceAccount
+  name: "prow-controller-manager"
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -118,6 +118,6 @@ roleRef:
   kind: Role
   name: "prow-controller-manager"
 subjects:
-  - kind: ServiceAccount
-    name: "prow-controller-manager"
-    namespace: default
+- kind: ServiceAccount
+  name: "prow-controller-manager"
+  namespace: default

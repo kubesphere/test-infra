@@ -24,8 +24,8 @@ spec:
   selector:
     app: hook
   ports:
-    - name: main
-      port: 8888
-    - name: metrics
-      port: 9090
+  - name: main
+    port: 8888
+  - name: metrics
+    port: 9090
   type: NodePort

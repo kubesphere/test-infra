@@ -44,5 +44,5 @@ roleRef:
   kind: Role
   name: "hook"
 subjects:
-  - kind: ServiceAccount
-    name: "hook"
+- kind: ServiceAccount
+  name: "hook"

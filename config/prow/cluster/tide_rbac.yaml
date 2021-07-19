@@ -36,5 +36,5 @@ roleRef:
   kind: Role
   name: tide
 subjects:
-  - kind: ServiceAccount
-    name: tide
+- kind: ServiceAccount
+  name: tide

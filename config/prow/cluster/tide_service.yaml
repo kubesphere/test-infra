@@ -24,9 +24,9 @@ spec:
   selector:
     app: tide
   ports:
-    - name: main
-      port: 80
-      targetPort: 8888
-    - name: metrics
-      port: 9090
+  - name: main
+    port: 80
+    targetPort: 8888
+  - name: metrics
+    port: 9090
   type: ClusterIP

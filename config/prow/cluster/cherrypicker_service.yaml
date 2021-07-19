@@ -10,7 +10,7 @@ spec:
   selector:
     app: cherrypicker
   ports:
-    - name: http
-      port: 80
-      targetPort: http
+  - name: http
+    port: 80
+    targetPort: http
   type: ClusterIP

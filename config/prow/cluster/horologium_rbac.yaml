@@ -35,5 +35,5 @@ roleRef:
   kind: Role
   name: "horologium"
 subjects:
-  - kind: ServiceAccount
-    name: "horologium"
+- kind: ServiceAccount
+  name: "horologium"

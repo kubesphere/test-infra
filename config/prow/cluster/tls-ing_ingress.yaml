@@ -19,7 +19,7 @@ metadata:
   annotations:
     # Change this to your issuer when using cert-manager. Does
     # nothing when not using cert-manager.
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
   labels:
     app.kubernetes.io/part-of: prow
 spec:
@@ -29,20 +29,20 @@ spec:
       port:
         number: 80
   rules:
-    - host: prow.kubesphere.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: deck
-                port:
-                  number: 80
-          - path: /hook
-            pathType: Prefix
-            backend:
-              service:
-                name: hook
-                port:
-                  number: 8888
+  - host: prow.kubesphere.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: deck
+            port:
+              number: 80
+      - path: /hook
+        pathType: Prefix
+        backend:
+          service:
+            name: hook
+            port:
+              number: 8888
