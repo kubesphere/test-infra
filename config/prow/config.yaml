@@ -137,3 +137,12 @@ presets:
   volumeMounts:
   - mountPath: /var/run/docker.sock
     name: docker-sock
+- labels:
+    preset-docker-credentials: "true"
+  volumes:
+  - name: docker-credential
+    secret:
+      secretName: docker
+  volumeMounts:
+  - mountPath: /etc/docker/
+    name: docker-credential

@@ -4,6 +4,8 @@ metadata:
   name: prowjobs.prow.k8s.io
   annotations:
     "api-approved.kubernetes.io": "https://github.com/kubernetes/test-infra/pull/8669"
+  labels:
+    app.kubernetes.io/part-of: prow
 spec:
   group: prow.k8s.io
   names:

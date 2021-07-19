@@ -1,4 +1,4 @@
-# Copyright 2019 The Kubernetes Authors All rights reserved.
+# Copyright 2021 The KubeSphere Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: sinker
-    app.kubernetes.io/part-of: prow
-  namespace: default
-  name: sinker
-spec:
-  ports:
-    - name: metrics
-      port: 9090
-  selector:
-    app: sinker
+update-config:
+	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml | kubectl replace configmap config -f -
+
+update-plugins:
+	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml | kubectl replace configmap plugins -f -
+
+deploy:
+	kubectl apply -f cluster/ --prune -l app.kubernetes.io/part-of=prow 
+
+update-job-config:
+	./update-job-config.sh ../jobs/

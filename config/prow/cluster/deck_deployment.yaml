@@ -19,6 +19,7 @@ metadata:
   name: deck
   labels:
     app: deck
+    app.kubernetes.io/part-of: prow
 spec:
   replicas: 3
   strategy:

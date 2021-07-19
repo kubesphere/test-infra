@@ -19,6 +19,7 @@ metadata:
   name: needs-rebase
   labels:
     app: needs-rebase
+    app.kubernetes.io/part-of: prow
 spec:
   replicas: 1
   selector:

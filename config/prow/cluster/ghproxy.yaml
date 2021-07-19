@@ -18,6 +18,7 @@ metadata:
   namespace: default
   labels:
     app: ghproxy
+    app.kubernetes.io/part-of: prow
   name: ghproxy
 spec:
   accessModes:
@@ -33,6 +34,7 @@ metadata:
   name: ghproxy
   labels:
     app: ghproxy
+    app.kubernetes.io/part-of: prow
 spec:
   selector:
     matchLabels:
@@ -72,6 +74,7 @@ kind: Service
 metadata:
   labels:
     app: ghproxy
+    app.kubernetes.io/part-of: prow
   namespace: default
   name: ghproxy
 spec:

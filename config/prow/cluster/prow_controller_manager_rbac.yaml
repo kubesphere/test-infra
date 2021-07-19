@@ -17,12 +17,16 @@ kind: ServiceAccount
 metadata:
   namespace: default
   name: "prow-controller-manager"
+  labels:
+    app.kubernetes.io/part-of: prow
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: default
   name: "prow-controller-manager"
+  labels:
+    app.kubernetes.io/part-of: prow
 rules:
 - apiGroups:
   - coordination.k8s.io
@@ -72,6 +76,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: test-pods
   name: "prow-controller-manager"
+  labels:
+    app.kubernetes.io/part-of: prow
 rules:
 - apiGroups:
    - ""
@@ -90,6 +96,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: default
   name: "prow-controller-manager"
+  labels:
+    app.kubernetes.io/part-of: prow
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -103,6 +111,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: test-pods
   name: "prow-controller-manager"
+  labels:
+    app.kubernetes.io/part-of: prow
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role

@@ -5,6 +5,7 @@ metadata:
   name: sinker
   labels:
     app: sinker
+    app.kubernetes.io/part-of: prow
 spec:
   replicas: 1
   selector:

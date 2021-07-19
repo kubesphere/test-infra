@@ -1,4 +1,5 @@
-# Copyright 2019 The Kubernetes Authors All rights reserved.
+#!/usr/bin/env bash
+# Copyright 2021 The KubeSphere Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: sinker
-    app.kubernetes.io/part-of: prow
-  namespace: default
-  name: sinker
-spec:
-  ports:
-    - name: metrics
-      port: 9090
-  selector:
-    app: sinker
+set -eu
+set -o pipefail
+
+JOB_CONFIG_PATH=${1:-}
+
+if [[ -z "${JOB_CONFIG_PATH}" ]]; then
+    echo "No job configs path provided, exiting..."
+    exit 1
+fi
+
+find "${JOB_CONFIG_PATH}" -name "*.yaml" | \
+    xargs -n1 -I {} sh -c 'echo --from-file=$(basename {})={}' | \
+    tr '\n' ' ' | \
+    cat <(echo -n "kubectl create cm job-config --dry-run -o yaml ") - | \
+    sh | \
+    kubectl replace -f - 
