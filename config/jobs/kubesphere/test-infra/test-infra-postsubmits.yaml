@@ -20,7 +20,7 @@ postsubmits:
       containers:
       - image: kubesphere/build-tools:master-latest
         command:
-        - make 
+        - make
         - -C
         - config/prow
         - deploy
@@ -45,7 +45,7 @@ postsubmits:
       containers:
       - image: kubesphere/build-tools:master-latest
         command:
-        - make 
+        - make
         - -C
         - config/prow
         - update-job-config
