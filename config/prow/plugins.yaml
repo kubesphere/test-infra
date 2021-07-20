@@ -44,6 +44,11 @@ size:
   xl:  500
   xxl: 1000
 
+repo_milestone:
+  '':
+    maintainers_id: 4979590
+    maintainers_team: milestone-maintainers
+
 plugins:
   kubesphere:
     plugins:
