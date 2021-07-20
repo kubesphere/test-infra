@@ -1,0 +1,36 @@
+presubmits:
+  kubesphere/kubesphere:
+  - name: pull-console-unit-test
+    labels:
+      preset-go-build-cache: "true"
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - command:
+        - entrypoint
+        - yarn && yarn test
+        image: node:12.18
+        name: ""
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: "4"
+            memory: 2Gi
+  - name: pull-console-build
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - command:
+        - entrypoint
+        - yarn && yarn build
+        image: node:12.18
+        name: ""
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: "4"
+            memory: 2Gi
