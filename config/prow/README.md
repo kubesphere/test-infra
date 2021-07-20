@@ -25,3 +25,13 @@ Prow configuration can be updated via PR on `kubesphere/test-infra`. Once the PR
 - **periodics** run on a periodic basis
 
 All KubeSphere prowjobs can be found [here](https://github.com/kubesphere/test-infra/tree/main/config/jobs). Please make sure each yaml name is unique, cause its name will be used as key in configmap.
+
+# Test ProwJobs locally
+
+By referring to [using-pj-on-kindsh](https://github.com/kubernetes/test-infra/blob/master/prow/build_test_update.md#using-pj-on-kindsh), 
+
+```
+Note: Test containers designed for decorated jobs (configured with decorate: true) may behave incorrectly or fail entirely without the environment the pod utilities provide. Similarly jobs that mount volumes or use extra_refs likely won't work properly. These jobs are best run locally as decorated pods inside a Kind cluster Using pj-on-kind.sh.
+```
+
+We recommend you to test prowjobs with `/pj-on-kind.sh`.
