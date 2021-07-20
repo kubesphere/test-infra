@@ -1,34 +1,32 @@
 presubmits:
   kubesphere/console:
   - name: pull-console-unit-test
-    always_run: false
+    always_run: true
     decorate: true
     spec:
       containers:
       - command:
-        - entrypoint
-        - yarn && yarn test
+        - "/bin/sh"
+        - "-c" 
+        - "yarn && yarn test"
         image: node:12.18
         name: ""
         resources:
-          limits:
-            memory: 8Gi
           requests:
-            cpu: "4"
+            cpu: "1"
             memory: 2Gi
   - name: pull-console-build
-    always_run: false
+    always_run: true
     decorate: true
     spec:
       containers:
       - command:
-        - entrypoint
-        - yarn && yarn build
+        - "/bin/sh"
+        - "-c"
+        - "yarn && yarn build"
         image: node:12.18
         name: ""
         resources:
-          limits:
-            memory: 8Gi
           requests:
-            cpu: "4"
+            cpu: "1"
             memory: 2Gi
