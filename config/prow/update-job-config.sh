@@ -26,6 +26,6 @@ fi
 find "${JOB_CONFIG_PATH}" -name "*.yaml" | \
     xargs -n1 -I {} sh -c 'echo --from-file=$(basename {})={}' | \
     tr '\n' ' ' | \
-    cat <(echo -n "kubectl create cm job-config --dry-run -o yaml ") - | \
+    cat <(echo -n "kubectl -n default create cm job-config --dry-run -o yaml ") - | \
     sh | \
-    kubectl replace -f - 
+    kubectl -n default replace -f - 
