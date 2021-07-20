@@ -187,7 +187,7 @@ ENV GOROOT=/usr/local/go
 ENV GOPATH=/go
 ENV GOCACHE=/gocache
 ENV GOBIN=/gobin
-ENV PATH=/usr/local/go/bin:/gobin:$PATH
+ENV PATH=/usr/local/go/bin:/gobin:/usr/local/kubebuilder/bin:$PATH
 
 # Create the file system
 COPY --from=base_os_context / /
