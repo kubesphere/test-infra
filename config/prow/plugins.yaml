@@ -26,7 +26,7 @@ slack:
     - kubesphere/ks-installer
     - kubesphere/kubekey
     channels:
-    - test-and-release
+    - prow
 
 lgtm:
 - repos:
