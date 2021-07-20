@@ -7,7 +7,7 @@ presubmits:
       containers:
       - command:
         - "/bin/sh"
-        - "-c" 
+        - "-c"
         - "yarn && yarn test"
         image: node:12.18
         name: ""
