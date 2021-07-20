@@ -13,13 +13,13 @@
 # limitations under the License.
 
 update-config:
-	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml | kubectl replace configmap config -f -
+	kubectl -n default create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml | kubectl -n default replace configmap config -f -
 
 update-plugins:
-	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml | kubectl replace configmap plugins -f -
+	kubectl -n default create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml | kubectl -n default replace configmap plugins -f -
 
 deploy:
-	kubectl apply -f cluster/ --prune -l app.kubernetes.io/part-of=prow 
+	kubectl -n default apply -f cluster/ --prune -l app.kubernetes.io/part-of=prow 
 
 update-job-config:
 	./update-job-config.sh ../jobs/
