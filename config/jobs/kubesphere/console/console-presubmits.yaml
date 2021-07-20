@@ -1,9 +1,7 @@
 presubmits:
-  kubesphere/kubesphere:
+  kubesphere/console:
   - name: pull-console-unit-test
-    labels:
-      preset-go-build-cache: "true"
-    always_run: true
+    always_run: false
     decorate: true
     spec:
       containers:
@@ -19,7 +17,7 @@ presubmits:
             cpu: "4"
             memory: 2Gi
   - name: pull-console-build
-    always_run: true
+    always_run: false
     decorate: true
     spec:
       containers:
