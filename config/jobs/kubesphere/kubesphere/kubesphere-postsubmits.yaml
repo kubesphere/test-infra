@@ -4,7 +4,7 @@ postsubmits:
     labels:
       preset-go-build-cache: "true"
       preset-docker-sock: "true"
-      preset-docker-credential: "true"
+      preset-docker-credentials: "true"
     always_run: true
     branches:
     - ^master$
@@ -42,7 +42,7 @@ periodics:
   labels:
     preset-go-build-cache: "true"
     preset-docker-sock: "true"
-    preset-docker-credential: "true"
+    preset-docker-credentials: "true"
   spec:
     containers:
     - image: kubesphere/build-tools:master-latest
