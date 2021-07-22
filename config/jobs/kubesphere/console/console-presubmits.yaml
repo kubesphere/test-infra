@@ -1,0 +1,32 @@
+presubmits:
+  kubesphere/console:
+  - name: pull-console-unit-test
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - command:
+        - "/bin/sh"
+        - "-c"
+        - "yarn && yarn test"
+        image: node:12.18
+        name: ""
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
+  - name: pull-console-build
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - command:
+        - "/bin/sh"
+        - "-c"
+        - "yarn && yarn build"
+        image: node:12.18
+        name: ""
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
