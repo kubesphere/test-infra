@@ -32,7 +32,7 @@ periodics:
   name: kubesphere-console-periodic-build-image
   labels:
     preset-docker-sock: "true"
-    preset-docker-credential: "true"
+    preset-docker-credentials: "true"
   spec:
     containers:
     - image: kubesphere/build-tools:master-latest
