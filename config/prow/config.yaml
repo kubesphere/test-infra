@@ -144,5 +144,6 @@ presets:
     secret:
       secretName: docker
   volumeMounts:
-  - mountPath: /home/.docker/
+  - mountPath: /home/.docker/config
+    subPath: config
     name: docker-credential
