@@ -3,7 +3,7 @@ postsubmits:
   - name: pull-console-build-image
     labels:
       preset-docker-sock: "true"
-      preset-docker-credential: "true"
+      preset-docker-credentials: "true"
     always_run: true
     decorate: true
     spec:
@@ -39,7 +39,7 @@ periodics:
       command:
       - "/bin/sh"
       - "-c"
-      - TAG=nightly-$(date "+%Y%m%d") make image && TAG=nightly-$(date "+%Y%m%d") make image-push
+      - export TAG=nightly-$(date "+%Y%m%d") && make image && make image-push
       # docker-in-docker needs privileged mode
       securityContext:
         priviledged: true
