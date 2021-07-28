@@ -43,6 +43,7 @@ periodics:
     preset-go-build-cache: "true"
     preset-docker-sock: "true"
     preset-docker-credentials: "true"
+    preset-docker-multiarch: "true"
   spec:
     containers:
     - image: kubesphere/build-tools:master-latest

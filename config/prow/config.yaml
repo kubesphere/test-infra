@@ -147,3 +147,13 @@ presets:
   - mountPath: /home/.docker/config.json
     subPath: config.json
     name: docker-credential
+- labels:
+    preset-docker-multiarch: "true"
+  volumes:
+    - name: docker-multiarch
+      hostPath:
+        path: /root/.docker/buildx
+        type: ""
+  volumeMounts:
+  - name: docker-multiarch
+    mountPath: /home/.docker/buildx
