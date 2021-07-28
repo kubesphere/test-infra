@@ -150,10 +150,10 @@ presets:
 - labels:
     preset-docker-multiarch: "true"
   volumes:
-    - name: docker-multiarch
-      hostPath:
-        path: /root/.docker/buildx
-        type: ""
+  - name: docker-multiarch
+    hostPath:
+      path: /root/.docker/buildx
+      type: ""
   volumeMounts:
   - name: docker-multiarch
     mountPath: /home/.docker/buildx
