@@ -1,5 +1,9 @@
 approvers:
-    - zryfish
+    - zryfish # oncall
+    - yuswift
 
 reviewers:
     - zryfish
+    - yuswift
+    - liuyp2018
+    - wenxin-01
