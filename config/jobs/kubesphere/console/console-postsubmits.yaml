@@ -5,6 +5,9 @@ postsubmits:
       preset-docker-sock: "true"
       preset-docker-credentials: "true"
     always_run: true
+    branches:
+    - ^master$
+    - release-*
     decorate: true
     spec:
       containers:

@@ -3,6 +3,9 @@ presubmits:
   - name: pull-console-unit-test
     always_run: true
     decorate: true
+    branches:
+    - ^master$
+    - release-*
     spec:
       containers:
       - command:
