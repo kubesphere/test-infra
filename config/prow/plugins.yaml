@@ -104,6 +104,11 @@ plugins:
     - release-note
     - require-matching-label
 
+  kubesphere/ks-devops:
+    plugins:
+    - milestone
+    - milestonestatus
+
 external_plugins:
   kubesphere:
   - name: cherrypicker
