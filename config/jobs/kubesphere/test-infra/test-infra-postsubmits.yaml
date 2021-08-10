@@ -51,3 +51,39 @@ postsubmits:
         - update-job-config
         - update-config
         - update-plugins
+        - update-label-config
+
+periodics:
+- cron: "17 * * * *"  # Every hour at 17 minutes past the hour
+  name: ci-test-infra-label-sync
+  labels:
+    app: label-sync
+  decorate: true
+  spec:
+    containers:
+    - name: label-sync
+      image: gcr.io/k8s-prow/label_sync:v20210809-8baaf73c0a
+      command:
+      - /app/label_sync/app.binary
+      args:
+      - --config=/etc/config/labels.yaml
+      - --confirm=true
+      - --orgs=kubesphere,kubesphere-sigs
+      - --token=/etc/github/oauth
+      - --endpoint=http://ghproxy.default.svc.cluster.local
+      - --endpoint=https://api.github.com
+      - --debug
+      volumeMounts:
+      - name: oauth
+        mountPath: /etc/github
+        readOnly: true
+      - name: config
+        mountPath: /etc/config
+        readOnly: true
+    volumes:
+    - name: oauth
+      secret:
+        secretName: oauth-token
+    - name: config
+      configMap:
+        name: label-config
