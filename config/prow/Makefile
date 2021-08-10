@@ -18,6 +18,9 @@ update-config:
 update-plugins:
 	kubectl -n default create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml | kubectl -n default replace configmap plugins -f -
 
+update-label-config:
+	kubectl -n test-pods create configmap label-config --from-file=labels.yaml=labels.yaml --dry-run -o yaml | kubectl -n test-pods replace configmap label-config -f -
+
 deploy:
 	kubectl -n default apply -f cluster/ --prune -l app.kubernetes.io/part-of=prow 
 
