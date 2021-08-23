@@ -382,3 +382,17 @@ repos:
         target: both
         prowPlugin: label
         addedBy: anyone
+      - color: e11d21
+        description: Indicates that a new feature has been added to the web console and the UI text needs to be reviewed by the technical writing team.
+        name: require-ui-text-review
+        target: both
+        prowPlugin: label
+        addedBy: anyone
+  kubesphere/console:
+    labels:
+      - color: e11d21
+        description: Indicates that a new feature has been added to the web console and the UI text needs to be reviewed by the technical writing team.
+        name: require-ui-text-review
+        target: both
+        prowPlugin: label
+        addedBy: anyone
