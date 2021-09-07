@@ -384,7 +384,7 @@ repos:
         addedBy: anyone
       - color: e11d21
         description: Indicates that the UI text needs to be reviewed by the technical writing team.
-        name: require-ui-text-review
+        name: kind/require-ui-text-review
         target: both
         prowPlugin: label
         addedBy: anyone
@@ -392,7 +392,7 @@ repos:
     labels:
       - color: e11d21
         description: Indicates that the UI text needs to be reviewed by the technical writing team.
-        name: require-ui-text-review
+        name: kind/require-ui-text-review
         target: both
         prowPlugin: label
         addedBy: anyone
