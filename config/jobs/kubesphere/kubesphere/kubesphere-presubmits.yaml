@@ -52,7 +52,7 @@ presubmits:
     labels:
       preset-go-build-cache: "true"
       preset-docker-sock: "true"
-    always_run: true
+    always_run: false
     skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^master$
