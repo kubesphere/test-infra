@@ -8,6 +8,8 @@ postsubmits:
     always_run: true
     branches:
     - ^master$
+    - ^release-.*$
+    - ^v\d+\.\d+\.\d+$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -17,7 +19,7 @@ postsubmits:
         - bash
         - -e
         - -c
-        - "make container-push"
+        - "TAG=${PULL_BASE_REF} make container-cross-push"
         image: kubesphere/build-tools:master-latest
         name: ""
         resources:
@@ -32,7 +34,10 @@ postsubmits:
 periodics:
 - interval: 24h
   decorate: true
-  branches: master
+  branches:
+  - ^master$
+  - ^release-.*$
+  - ^v\d+\.\d+\.\d+$
   extra_refs:
   - org: kubesphere
     repo: kubesphere
@@ -52,7 +57,7 @@ periodics:
       - bash
       - -e
       - -c
-      - "make container-cross-push"
+      - "TAG=${PULL_BASE_REF} make container-cross-push"
       # docker-in-docker needs privileged mode
       securityContext:
         priviledged: true
