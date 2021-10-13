@@ -6,6 +6,7 @@ presubmits:
     always_run: true
     branches:
     - ^master$
+    - ^release-.*$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -13,7 +14,7 @@ presubmits:
       - command:
         - entrypoint
         - make
-        - test
+        - all
         image: kubesphere/build-tools:master-latest
         name: ""
         resources:
@@ -22,10 +23,12 @@ presubmits:
           requests:
             cpu: "4"
             memory: 2Gi
+
   - name: pull-kubesphere-verify
     always_run: true
     branches:
     - ^master$
+    - ^release-.*$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -36,6 +39,34 @@ presubmits:
         - -e
         - -c
         - "make verify-all"
+        image: kubesphere/build-tools:master-latest
+        name: ""
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: "4"
+            memory: 2Gi
+
+  - name: pull-kubesphere-e2e
+    labels:
+      preset-go-build-cache: "true"
+      preset-docker-sock: "true"
+    always_run: false
+    skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
+    branches:
+    - ^master$
+    - ^release-.*$
+    decorate: true
+    path_alias: kubesphere.io/kubesphere
+    spec:
+      containers:
+      - command:
+        - entrypoint
+        - bash
+        - -e
+        - -c
+        - "make kind-e2e"
         image: kubesphere/build-tools:master-latest
         name: ""
         resources:
