@@ -5,6 +5,7 @@ postsubmits:
       preset-go-build-cache: "true"
       preset-docker-sock: "true"
       preset-docker-credentials: "true"
+      preset-docker-multiarch: "true"
     always_run: true
     branches:
     - ^master$
