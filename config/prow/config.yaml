@@ -174,7 +174,7 @@ presets:
     secret:
       secretName: preview-cluster-kubeconfig
   volumeMounts:
-  - mountPath: /home/.root/preview-kubeconfig
+  - mountPath: /home/.kube/preview-kubeconfig
     subPath: preview-kubeconfig
     name: preview-cluster-credential
 - labels:
