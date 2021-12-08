@@ -182,7 +182,7 @@ presets:
   volumes:
   - name: preview-deployment-template
     configMap:
-      configMapName: preview-deployment-template
+      name: preview-deployment-template
   volumeMounts:
   - mountPath: /home/.template/template.yaml
     name: preview-deployment-template
