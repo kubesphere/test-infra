@@ -18,6 +18,7 @@ presubmits:
           requests:
             cpu: "1"
             memory: 2Gi
+
   - name: pull-console-build
     always_run: true
     decorate: true
@@ -28,6 +29,36 @@ presubmits:
         - "-c"
         - "yarn && yarn build"
         image: node:12.18
+        name: ""
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
+
+  - name: pull-console-preview-deploy
+    labels:
+      preset-docker-sock: "true"
+      preset-docker-credentials: "true"
+      preset-preivew-cluster-kubeconfig: "true"
+      preset-github-credentials: "true"
+      preset-preview-deployment-template: "true"
+    always_run: false
+    decorate: true
+    skip_report: true
+    spec:
+      containers:
+      - command: ["/bin/bash", "-c"]
+        args:
+        - set -o errexit
+          set -o nounset
+          gh auth login < /home/.github/oauth
+          REPO=kubesphere TAG=pr-${PULL_NUMBER} make container push
+          sed "s/PULL_NUMBER/${PULL_NUMBER}/g" /home/.template/template.yaml | kubectl replace -f -
+          kubectl -n kubesphere-system wait deployment --for=condition=Available=true pr-${PULL_NUMBER}
+          url=$(kubectl -n kubesphere-system logs -lapp=pr-${PULL_NUMBER} -c kunnel |  grep -Eo 'https://[^ >]+')
+          destroy_date=$(date --date="tomorrow")
+          gh -R kubesphere/console pr comment ${PULL_NUMBER} --body "Preview cluster is ready on ${URL}, and it will be cleaned on ${destroy_date}."
+        image: kubesphere/build-tools-lite:master-latest
         name: ""
         resources:
           requests:

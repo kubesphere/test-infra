@@ -157,3 +157,33 @@ presets:
   volumeMounts:
   - name: docker-multiarch
     mountPath: /home/.docker/buildx
+- labels:
+    preset-github-credentials: "true"
+  volumes:
+  - name: github-credential
+    secret:
+      secretName: oauth-token
+  volumeMounts:
+  - name: github-credential
+    mountPath: /home/.github/oauth
+    subPath: oauth
+- labels:
+    preset-preivew-cluster-kubeconfig: "true"
+  volumes:
+  - name: preview-cluster-credential
+    secret:
+      secretName: preivew-cluster-kubeconfig
+  volumeMounts:
+  - mountPath: /home/.root/preview-kubeconfig
+    subPath: preview-kubeconfig
+    name: preview-cluster-credential
+- labels:
+    preset-preview-deployment-template: "true"
+  volumes:
+  - name: preview-deployment-template
+    configMap:
+      configMapName: preview-deployment-template
+  volumeMounts:
+  - mountPath: /home/.template/template.yaml
+    name: preview-deployment-template
+    subPath: template.yaml
