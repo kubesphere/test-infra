@@ -52,15 +52,16 @@ presubmits:
         - set -o errexit;
           set -o nounset;
           gh auth login < /home/.github/oauth;
-          REPO=kubesphere TAG=pr-${PULL_NUMBER} make container push;
-          sed "s/PULL_NUMBER/${PULL_NUMBER}/g" /home/.template/template.yaml | kubectl replace -f -;
-          kubectl -n kubesphere-system wait deployment --for=condition=Available=true pr-${PULL_NUMBER};
-          url=$(kubectl -n kubesphere-system logs -lapp=pr-${PULL_NUMBER} -c kunnel |  grep -Eo 'https://[^ >]+');
+          gh -R kubesphere/console pr comment ${PULL_NUMBER} --body "Start building preview env, will notify when it's ready.";
+          REPO=kubespheredev TAG=pr-${PULL_NUMBER} make container push;
+          sed "s/PULL_NUMBER/$PULL_NUMBER/g" /home/.template/template.yaml | kubectl --kubeconfig /home/.kube/preview-kubeconfig apply -f -;
+          kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system wait deployment --for=condition=Available=true pr-${PULL_NUMBER};
+          url=$(kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system logs -lapp=pr-${PULL_NUMBER} -c kunnel |  grep -Eo 'https://[^ >]+');
           destroy_date=$(date --date="tomorrow");
           gh -R kubesphere/console pr comment ${PULL_NUMBER} --body "Preview cluster is ready on ${URL}, and it will be cleaned on ${destroy_date}."
         image: kubesphere/build-tools-lite:master-latest
         name: ""
         resources:
           requests:
-            cpu: "1"
-            memory: 2Gi
+            cpu: "2"
+            memory: 4Gi
