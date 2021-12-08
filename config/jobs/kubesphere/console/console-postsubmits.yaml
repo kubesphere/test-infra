@@ -4,6 +4,7 @@ postsubmits:
     labels:
       preset-docker-sock: "true"
       preset-docker-credentials: "true"
+      preset-docker-multiarch: "true"
     always_run: true
     branches:
     - ^master$
@@ -36,6 +37,7 @@ periodics:
   labels:
     preset-docker-sock: "true"
     preset-docker-credentials: "true"
+    preset-docker-multiarch: "true"
   spec:
     containers:
     - image: kubesphere/build-tools:master-latest
