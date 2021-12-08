@@ -14,7 +14,7 @@ postsubmits:
       - command:
         - "/bin/sh"
         - "-c"
-        - "make image && make image-push"
+        - "REPO=kubesphere TAG=${PULL_BASE_REF} make container-cross-push"
         image: kubesphere/build-tools:master-latest
         name: ""
         resources:
@@ -42,7 +42,7 @@ periodics:
       command:
       - "/bin/sh"
       - "-c"
-      - export TAG=nightly-$(date "+%Y%m%d") && make image && make image-push
+      - export REPO=kubespheredev TAG=nightly-$(date "+%Y%m%d") && make container-cross-push
       # docker-in-docker needs privileged mode
       securityContext:
         priviledged: true
