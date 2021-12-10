@@ -76,8 +76,8 @@ periodics:
         set -o errexit;
         set -o nounset;
         REPO=kubespheredev TAG=l10n make container-push;
-        kubectl --kubeconfig /home/.kube/preview-cluster set image deployment/ks-console-l10n ks-console=kubespheredev/ks-console:l10n;
-        kubectl --kubeconfig /home/.kube/preview-cluster rollout restart deployment ks-console-l10n;
+        kubectl --kubeconfig /home/.kube/preview-kubeconfig set image deployment/ks-console-l10n ks-console=kubespheredev/ks-console:l10n;
+        kubectl --kubeconfig /home/.kube/preview-kubeconfig rollout restart deployment ks-console-l10n;
       # docker-in-docker needs privileged mode
       securityContext:
         priviledged: true
