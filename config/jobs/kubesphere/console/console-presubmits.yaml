@@ -28,7 +28,7 @@ presubmits:
         - "/bin/sh"
         - "-c"
         - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container"
-        image: node:12.18
+        image: kubesphere/build-tools:master-latest
         name: ""
         resources:
           requests:
