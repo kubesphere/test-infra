@@ -20,6 +20,8 @@ presubmits:
             memory: 2Gi
 
   - name: pull-console-build
+    labels:
+      preset-docker-sock: "true"
     always_run: true
     decorate: true
     spec:
