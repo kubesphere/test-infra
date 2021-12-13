@@ -9,6 +9,7 @@ postsubmits:
     branches:
     - ^master$
     - release-*
+    - ^v\d+\.\d+\.\d+$
     decorate: true
     spec:
       containers:
