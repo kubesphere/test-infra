@@ -15,7 +15,7 @@ postsubmits:
       - command:
         - "/bin/sh"
         - "-c"
-        - "REPO=kubesphere TAG=${PULL_BASE_REF} make container-cross-push"
+        - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
         image: kubesphere/build-tools:master-latest
         name: ""
         resources:
@@ -70,7 +70,7 @@ periodics:
   spec:
     containers:
     - image: kubesphere/build-tools-lite:master-latest
-      command:  ["/bin/bash", "-c"]
+      command: ["/bin/bash", "-c"]
       args:
       - set -eux
         set -o errexit;

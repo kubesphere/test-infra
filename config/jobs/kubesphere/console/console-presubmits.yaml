@@ -27,7 +27,7 @@ presubmits:
       - command:
         - "/bin/sh"
         - "-c"
-        - "yarn && yarn build"
+        - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container"
         image: node:12.18
         name: ""
         resources:
