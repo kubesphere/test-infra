@@ -115,6 +115,8 @@ plugins:
     plugins:
     - milestone
     - milestonestatus
+    - release-note
+    - require-matching-label
 
 external_plugins:
   kubesphere:
