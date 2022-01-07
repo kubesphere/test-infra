@@ -7,6 +7,7 @@ triggers:
 - repos:
   - kubesphere
   - kubesphere-sigs
+  - openelb
 
 config_updater:
   maps:
@@ -34,6 +35,8 @@ lgtm:
   - kubesphere/console
   - kubesphere/ks-installer
   - kubesphere/kubekey
+  - openelb/openelb
+  - openelb/porter-website
   store_tree_hash: true
 
 # Lower bounds in number of lines changed; XS is assumed to be zero.
@@ -88,6 +91,27 @@ plugins:
     - hold
     - label
     - lgtm
+    - lifecycle
+    - retitle
+    - size
+    - skip
+    - slackevents
+    - trigger
+    - verify-owners
+    - wip
+
+  openelb:
+    plugins:
+    - approve
+    - assign
+    - cla
+    - golint
+    - help
+    - hold
+    - label
+    - lgtm
+    - pony
+    - cat
     - lifecycle
     - retitle
     - size
