@@ -396,3 +396,35 @@ repos:
         target: both
         prowPlugin: label
         addedBy: anyone
+  kubesphere/qkcp:
+    labels:     
+      - color: FF9912
+        description: 
+        name: priority/Medium
+        target: both
+        prowPlugin: label
+        addedBy: anyone
+      - color: E3CF57
+        description: 
+        name: priority/Low
+        target: both
+        prowPlugin: label
+        addedBy: anyone
+      - color: ee5500
+        description: 
+        name: priority/High
+        target: both
+        prowPlugin: label
+        addedBy: anyone
+      - color: c7def8
+        description: Categorizes issue or PR as related to documentation.
+        name: kind/documentation
+        target: both
+        prowPlugin: label
+        addedBy: anyone
+      - color: c7def8
+        description: Categorizes issue or PR as related to a new feature.
+        name: kind/feature
+        target: both
+        prowPlugin: label
+        addedBy: anyone
