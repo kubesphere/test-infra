@@ -1,9 +1,9 @@
 approvers:
-    - zryfish # oncall
-    - yuswift
+    - pixiake # oncall
+    - zryfish 
 
 reviewers:
     - zryfish
-    - yuswift
     - liuyp2018
     - wenxin-01
+    - pixiake
