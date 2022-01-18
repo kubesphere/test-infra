@@ -70,6 +70,7 @@ tide:
     kubesphere/s2irun: squash
     kubesphere/community: squash
     kubesphere/ks-jenkins: squash
+    kubesphere/ks-devops: squash
     kubesphere/prow-tutorial: squash
   target_url: https://prow.kubesphere.io
   queries:
