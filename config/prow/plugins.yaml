@@ -36,7 +36,7 @@ lgtm:
   - kubesphere/ks-installer
   - kubesphere/kubekey
   - openelb/openelb
-  - openelb/porter-website
+  - openelb/website
   store_tree_hash: true
 
 # Lower bounds in number of lines changed; XS is assumed to be zero.
