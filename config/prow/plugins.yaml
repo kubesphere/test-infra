@@ -59,6 +59,11 @@ repo_milestone:
     maintainers_id: 4979590
     maintainers_team: milestone-maintainers
 
+approve:
+  - repos:
+      - kubesphere/ks-devops
+    require_self_approval: true
+
 plugins:
   kubesphere:
     plugins:
