@@ -146,6 +146,9 @@ plugins:
     - milestonestatus
     - release-note
     - require-matching-label
+  kubesphere/test-infra:
+    plugins:
+      - config-updater
 
 external_plugins:
   kubesphere:
