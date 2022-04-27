@@ -26,6 +26,7 @@ slack:
     - kubesphere/console
     - kubesphere/ks-installer
     - kubesphere/kubekey
+    - kubesphere-sigs/kubesphere
     channels:
     - prow
 
@@ -37,6 +38,7 @@ lgtm:
   - kubesphere/kubekey
   - openelb/openelb
   - openelb/website
+  - kubesphere-sigs/kubesphere
   store_tree_hash: true
 
 # Lower bounds in number of lines changed; XS is assumed to be zero.
@@ -62,6 +64,7 @@ repo_milestone:
 approve:
   - repos:
       - kubesphere/ks-devops
+      - kubesphere-sigs/kubesphere
     require_self_approval: true
 
 plugins:
