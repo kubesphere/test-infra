@@ -66,6 +66,7 @@ tide:
   rebase_label: tide/merge-method-rebase
   merge_label: tide/merge-method-merge
   merge_method:
+    kubesphere/console: squash
     kubesphere/s2ioperator: squash
     kubesphere/s2irun: squash
     kubesphere/community: squash
