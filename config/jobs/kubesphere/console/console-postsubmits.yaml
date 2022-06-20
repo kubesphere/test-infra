@@ -5,7 +5,8 @@ postsubmits:
       preset-docker-sock: "true"
       preset-docker-credentials: "true"
       preset-docker-multiarch: "true"
-    always_run: true
+    always_run: false
+    skip_if_only_changed: "^locales/"
     branches:
     - ^master$
     - release-*
