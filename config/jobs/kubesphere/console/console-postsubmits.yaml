@@ -5,12 +5,13 @@ postsubmits:
       preset-docker-sock: "true"
       preset-docker-credentials: "true"
       preset-docker-multiarch: "true"
-    always_run: false
-    skip_if_only_changed: "^locales/"
+    always_run: true
     branches:
     - ^master$
     - release-*
     - v*
+    skip_branches:
+    - l10n_master
     decorate: true
     spec:
       containers:
