@@ -58,35 +58,35 @@ periodics:
   annotations:
     description: "Periodic builds and pushs"
 
-- interval: 1h
-  decorate: true
-  branches: l10n_master
-  extra_refs:
-  - org: kubesphere
-    repo: console
-    base_ref: l10n_master
-  name: kubesphere-console-periodic-update-l10n-environment
-  labels:
-    preset-docker-sock: "true"
-    preset-docker-credentials: "true"
-    preset-preivew-cluster-kubeconfig: "true"
-  spec:
-    containers:
-    - image: kubesphere/build-tools-lite:master-latest
-      command: ["/bin/bash", "-c"]
-      args:
-      - set -eux
-        set -o errexit;
-        set -o nounset;
-        REPO=kubespheredev TAG=l10n make container-push;
-        kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system set image deployment/ks-console-l10n ks-console=kubespheredev/ks-console:l10n;
-        kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system rollout restart deployment ks-console-l10n;
-      # docker-in-docker needs privileged mode
-      securityContext:
-        priviledged: true
-      resources:
-        requests:
-          cpu: 2
-          memory: "4Gi"
-  annotations:
-    description: "Periodic builds and update localization environment according to branch l10n_master"
+# - interval: 1h
+#   decorate: true
+#   branches: l10n_master
+#   extra_refs:
+#   - org: kubesphere
+#     repo: console
+#     base_ref: l10n_master
+#   name: kubesphere-console-periodic-update-l10n-environment
+#   labels:
+#     preset-docker-sock: "true"
+#     preset-docker-credentials: "true"
+#     preset-preivew-cluster-kubeconfig: "true"
+#   spec:
+#     containers:
+#     - image: kubesphere/build-tools-lite:master-latest
+#       command: ["/bin/bash", "-c"]
+#       args:
+#       - set -eux
+#         set -o errexit;
+#         set -o nounset;
+#         REPO=kubespheredev TAG=l10n make container-push;
+#         kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system set image deployment/ks-console-l10n ks-console=kubespheredev/ks-console:l10n;
+#         kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system rollout restart deployment ks-console-l10n;
+#       # docker-in-docker needs privileged mode
+#       securityContext:
+#         priviledged: true
+#       resources:
+#         requests:
+#           cpu: 2
+#           memory: "4Gi"
+#   annotations:
+#     description: "Periodic builds and update localization environment according to branch l10n_master"
