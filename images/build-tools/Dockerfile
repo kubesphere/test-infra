@@ -19,16 +19,15 @@
 # Binary Tools
 ###############
 
-ARG GOLANG_IMAGE=golang:1.16.5
+ARG GOLANG_IMAGE=golang:1.18.4
 FROM ${GOLANG_IMAGE} as binary_tools_context
 
 # Versions of tools we used
-ENV ETCD_VERSION=v3.4.16
 ENV GOIMPORTS_VERSION=v0.1.0
 ENV HELM3_VERSION=v3.4.2
-ENV K8S_CODE_GENERATOR_VERSION=1.18.16
+ENV K8S_CODE_GENERATOR_VERSION=v0.21.2
 ENV KIND_VERSION=v0.11.1
-ENV KUBERNETES_VERSION=v1.19.8
+ENV KUBERNETES_VERSION=1.22.1
 ENV SHELLCHECK_VERSION=v0.7.1
 ENV SU_EXEC_VERSION=0.2
 ENV YQ_VERSION=3.3.0
@@ -62,25 +61,15 @@ RUN apt update && apt install -y --no-install-recommends \
 RUN go install golang.org/x/tools/cmd/goimports@${GOIMPORTS_VERSION}
 RUN go install sigs.k8s.io/kind@${KIND_VERSION}
 
-# Install etcd
-ADD https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz /tmp
-RUN tar -xvzf /tmp/etcd-${ETCD_VERSION}-linux-amd64.tar.gz -C /tmp
-RUN mv /tmp/etcd-${ETCD_VERSION}-linux-amd64/etcd ${OUTDIR}/usr/local/kubebuilder/bin/
+# Install etcd, kube-apiserver and kubectl
+ADD https://storage.googleapis.com/kubebuilder-tools/kubebuilder-tools-${KUBERNETES_VERSION}-linux-amd64.tar.gz /tmp
+RUN tar -xvzf kubebuilder-tools-${KUBERNETES_VERSION}-linux-amd64.tar.gz -C ${OUTDIR}/usr/local/
 
-# Install kube-apiserver and kubectl
-ADD https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-server-linux-amd64.tar.gz /tmp
-RUN tar -xvzf kubernetes-server-linux-amd64.tar.gz -C /tmp
-RUN mv /tmp/kubernetes/server/bin/kube-apiserver ${OUTDIR}/usr/local/kubebuilder/bin/
-RUN mv /tmp/kubernetes/server/bin/kubectl ${OUTDIR}/usr/local/kubebuilder/bin/
-
-# go install does not seem to be compatible with this pesky code-generator repo
-# Install the code generator tools, and hopefully only these tools, this way
-RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/defaulter-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
-RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/client-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
-RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/lister-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
-RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/informer-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
-RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/deepcopy-gen@kubernetes-${K8S_CODE_GENERATOR_VERSION}
-RUN GO111MODULE=on go get -ldflags="-s -w" k8s.io/code-generator/cmd/go-to-protobuf@kubernetes-${K8S_CODE_GENERATOR_VERSION}
+# Install the code generator tools
+RUN GO111MODULE=on go install k8s.io/code-generator/cmd/client-gen@${K8S_CODE_GENERATOR_VERSION}
+RUN GO111MODULE=on go install k8s.io/code-generator/cmd/lister-gen@${K8S_CODE_GENERATOR_VERSION}
+RUN GO111MODULE=on go install k8s.io/code-generator/cmd/informer-gen@${K8S_CODE_GENERATOR_VERSION}
+RUN GO111MODULE=on go install k8s.io/code-generator/cmd/deepcopy-gen@${K8S_CODE_GENERATOR_VERSION}
 
 # ShellCheck linter
 ADD https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz /tmp
