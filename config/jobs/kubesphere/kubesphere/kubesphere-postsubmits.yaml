@@ -10,7 +10,6 @@ postsubmits:
     branches:
     - ^master$
     - ^release-[4-9].*$
-    - ^feature-pluggable$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -68,7 +67,6 @@ periodics:
   branches:
   - ^master$
   - ^release-[4-9].*$
-  - ^feature-pluggable$
   extra_refs:
   - org: kubesphere
     repo: kubesphere
