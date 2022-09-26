@@ -74,7 +74,6 @@ tide:
     kubesphere/ks-jenkins: squash
     kubesphere/ks-devops: squash
     kubesphere/prow-tutorial: squash
-    kubesphere-sigs/kubesphere: squash
   target_url: https://prow.kubesphere.io
   queries:
   - orgs:

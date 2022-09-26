@@ -72,7 +72,7 @@ periodics:
       - --endpoint=http://ghproxy.default.svc.cluster.local
       - --endpoint=https://api.github.com
       - --debug
-      - --only=kubesphere/kubesphere,kubesphere/console,kubesphere/ks-installer,kubesphere/kubekey,kubesphere/website,kubesphere/community,kubesphere/devops-agent,openelb/openelb,kubesphere-sigs/kubesphere
+      - --only=kubesphere/kubesphere,kubesphere/console,kubesphere/ks-installer,kubesphere/kubekey,kubesphere/website,kubesphere/community,kubesphere/devops-agent,openelb/openelb
       volumeMounts:
       - name: oauth
         mountPath: /etc/github
