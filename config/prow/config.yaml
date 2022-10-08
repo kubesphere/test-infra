@@ -77,19 +77,6 @@ tide:
   target_url: https://prow.kubesphere.io
   queries:
   - orgs:
-    - kubesphere
-    labels:
-    - lgtm
-    - approved
-    missingLabels:
-    - do-not-merge
-    - do-not-merge/contains-merge-commits
-    - do-not-merge/hold
-    - do-not-merge/invalid-commit-message
-    - do-not-merge/invalid-owners-file
-    - do-not-merge/work-in-progress
-    - needs-rebase
-  - orgs:
     - openelb
     labels:
     - lgtm
@@ -115,6 +102,25 @@ tide:
   - repos:
     - kubesphere/kubesphere
     - kubesphere/console
+    - kubesphere/ks-installer
+    - kubesphere/community
+    - kubesphere/kubekey
+    - kubesphere/kubeeye
+    - kubesphere/ks-devops
+    - kubesphere/helm-charts
+    - kubesphere/website
+    - kubesphere/extension-samples
+    - kubesphere/test-infra
+    - kubesphere/ksbuilder
+    - kubesphere/ks-jenkins
+    - kubesphere/devops-agent
+    - kubesphere/kube-design
+    - kubesphere/ks-prometheus
+    - kubesphere/tower
+    - kubesphere/notification-manager
+    - kubesphere/cluster-api-provider-qingcloud
+    - kubesphere/kubesphere-security-pack
+    - kubesphere/image-sync-config
     labels:
     - lgtm
     - approved
