@@ -40,6 +40,7 @@ postsubmits:
     always_run: true
     branches:
     - ^release-[1-3].*$
+    - v3*
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
