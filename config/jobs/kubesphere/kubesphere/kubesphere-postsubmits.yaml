@@ -20,7 +20,7 @@ postsubmits:
         - -e
         - -c
         - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-        image: kubesphere/build-tools:master-2022-07-15T02-03-46
+        image: kubesphere/build-tools:master-2023-02-07T15-52-56
         name: ""
         resources:
           limits:
@@ -81,7 +81,7 @@ periodics:
     preset-docker-multiarch: "true"
   spec:
     containers:
-    - image: kubesphere/build-tools:master-2022-07-15T02-03-46
+    - image: kubesphere/build-tools:master-2023-02-07T15-52-56
       command:
       - entrypoint
       - bash

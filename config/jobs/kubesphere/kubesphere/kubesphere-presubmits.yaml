@@ -7,7 +7,6 @@ presubmits:
     branches:
     - ^master$
     - ^release-[4-9].*$
-    - ^feature-pluggable$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -16,7 +15,7 @@ presubmits:
         - entrypoint
         - make
         - all
-        image: kubesphere/build-tools:master-2022-07-15T02-03-46
+        image: kubesphere/build-tools:master-2023-02-07T15-52-56
         name: ""
         resources:
           limits:
@@ -53,7 +52,6 @@ presubmits:
     branches:
     - ^master$
     - ^release-[4-9].*$
-    - ^feature-pluggable$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -64,7 +62,7 @@ presubmits:
         - -e
         - -c
         - "make verify-all"
-        image: kubesphere/build-tools:master-2022-07-15T02-03-46
+        image: kubesphere/build-tools:master-2023-02-07T15-52-56
         name: ""
         resources:
           limits:
