@@ -85,6 +85,7 @@ plugins:
     - trigger
     - verify-owners
     - transfer-issue
+    - dog
     - wip
 
   kubesphere-sigs:
