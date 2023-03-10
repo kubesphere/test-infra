@@ -84,8 +84,8 @@ plugins:
     - slackevents
     - trigger
     - verify-owners
-    - wip
     - transfer-issue
+    - wip
 
   kubesphere-sigs:
     plugins:
