@@ -3,7 +3,6 @@ presubmits:
   - name: pull-kubesphere-unit-test
     labels:
       preset-go-build-cache: "true"
-    always_run: true
     skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^master$
@@ -29,7 +28,6 @@ presubmits:
   - name: pull-kubesphere-unit-test
     labels:
       preset-go-build-cache: "true"
-    always_run: true
     skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^release-[1-3].*$
@@ -51,7 +49,6 @@ presubmits:
             memory: 2Gi
 
   - name: pull-kubesphere-verify
-    always_run: true
     skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^master$
@@ -77,7 +74,6 @@ presubmits:
             memory: 2Gi
 
   - name: pull-kubesphere-verify
-    always_run: true
     skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^release-[1-3].*$
@@ -105,7 +101,6 @@ presubmits:
       preset-go-build-cache: "true"
       preset-docker-sock: "true"
     always_run: false
-    skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^master$
     - ^release-.*$
