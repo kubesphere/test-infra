@@ -84,7 +84,6 @@ plugins:
     - slackevents
     - trigger
     - verify-owners
-    - transfer-issue
     - dog
     - wip
 
