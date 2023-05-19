@@ -50,7 +50,6 @@ presubmits:
 
   - name: pull-kubesphere-verify
     always_run: true
-    skip_if_only_changed: "^docs/|\\.(md|json)$|^(README|LICENSE)$"
     branches:
     - ^master$
     - ^release-[4-9].*$
