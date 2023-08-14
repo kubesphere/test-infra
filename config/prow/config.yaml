@@ -73,6 +73,7 @@ tide:
     kubesphere/community: squash
     kubesphere/ks-jenkins: squash
     kubesphere/ks-devops: squash
+    kubesphere/dev-guide: squash
     kubesphere/prow-tutorial: squash
   target_url: https://prow.kubesphere.io
   queries:
@@ -121,6 +122,7 @@ tide:
     - kubesphere/cluster-api-provider-qingcloud
     - kubesphere/kubesphere-security-pack
     - kubesphere/image-sync-config
+    - kubesphere/dev-guide
     labels:
     - lgtm
     - approved
