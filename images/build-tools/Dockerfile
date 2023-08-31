@@ -19,7 +19,7 @@
 # Binary Tools
 ###############
 
-ARG GOLANG_IMAGE=golang:1.18.4
+ARG GOLANG_IMAGE=golang:1.20.7
 FROM ${GOLANG_IMAGE} as binary_tools_context
 
 # Versions of tools we used
