@@ -10,6 +10,7 @@ postsubmits:
     branches:
     - ^master$
     - ^release-[4-9].*$
+    - ^release-3.[4-9].*$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -20,7 +21,7 @@ postsubmits:
         - -e
         - -c
         - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-        image: kubesphere/build-tools:master-2023-02-07T15-52-56
+        image: kubesphere/build-tools:master-2023-09-04T10-24-16
         name: ""
         resources:
           limits:
@@ -39,7 +40,8 @@ postsubmits:
       preset-docker-multiarch: "true"
     always_run: true
     branches:
-    - ^release-[1-3].*$
+    - ^release-[1-2].*$
+    - ^release-3.[0-3].*$
     - v3*
     decorate: true
     path_alias: kubesphere.io/kubesphere
@@ -68,6 +70,7 @@ periodics:
   branches:
   - ^master$
   - ^release-[4-9].*$
+  - ^release-3.[4-9].*$
   extra_refs:
   - org: kubesphere
     repo: kubesphere
@@ -81,7 +84,7 @@ periodics:
     preset-docker-multiarch: "true"
   spec:
     containers:
-    - image: kubesphere/build-tools:master-2023-02-07T15-52-56
+    - image: kubesphere/build-tools:master-2023-09-04T10-24-16
       command:
       - entrypoint
       - bash
@@ -101,7 +104,8 @@ periodics:
 - interval: 24h
   decorate: true
   branches:
-  - ^release-[1-3].*$
+  - ^release-[1-2].*$
+  - ^release-3.[0-3].*$
   extra_refs:
   - org: kubesphere
     repo: kubesphere
