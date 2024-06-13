@@ -19,7 +19,7 @@
 # Binary Tools
 ###############
 
-ARG GOLANG_IMAGE=golang:1.20.7
+ARG GOLANG_IMAGE=golang:1.21
 FROM ${GOLANG_IMAGE} as binary_tools_context
 
 # Versions of tools we used
@@ -29,7 +29,6 @@ ENV K8S_CODE_GENERATOR_VERSION=v0.21.2
 ENV KIND_VERSION=v0.11.1
 ENV KUBERNETES_VERSION=1.22.1
 ENV SHELLCHECK_VERSION=v0.7.1
-ENV SU_EXEC_VERSION=0.2
 ENV YQ_VERSION=3.3.0
 
 ENV GO111MODULE=on
@@ -82,13 +81,6 @@ RUN mkdir /tmp/helm3
 RUN tar -xf /tmp/helm-${HELM3_VERSION}-linux-amd64.tar.gz -C /tmp/helm3
 RUN cp /tmp/helm3/linux-amd64/helm ${OUTDIR}/usr/bin/helm3
 RUN mv /tmp/helm3/linux-amd64/helm ${OUTDIR}/usr/bin/helm
-
-# Install su-exec which is a tool that operates like sudo without the overhead
-ADD https://github.com/ncopa/su-exec/archive/v${SU_EXEC_VERSION}.tar.gz /tmp
-RUN tar -xzvf v${SU_EXEC_VERSION}.tar.gz
-WORKDIR /tmp/su-exec-${SU_EXEC_VERSION}
-RUN make
-RUN cp -a su-exec ${OUTDIR}/usr/bin
 
 # move installed go tools
 RUN mv /tmp/go/bin/* ${OUTDIR}/usr/bin
@@ -215,5 +207,14 @@ RUN chmod 777 /go && \
     chmod 777 /home/.helm
 
 WORKDIR /
+
+ENV SU_EXEC_VERSION=0.2
+# Install su-exec which is a tool that operates like sudo without the overhead
+ADD https://github.com/ncopa/su-exec/archive/v${SU_EXEC_VERSION}.tar.gz /tmp
+RUN tar -xzvf /tmp/v${SU_EXEC_VERSION}.tar.gz -C /tmp && \
+    cd /tmp/su-exec-${SU_EXEC_VERSION} && \
+    make &&  ./su-exec &&\
+    cp -a su-exec /usr/bin && \
+    rm -rf /tmp/su-exec-${SU_EXEC_VERSION}
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

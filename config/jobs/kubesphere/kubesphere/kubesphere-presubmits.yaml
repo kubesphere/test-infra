@@ -7,8 +7,30 @@ presubmits:
     branches:
     - ^master$
     - ^release-[4-9].*$
-    - ^release-3.[4-9].*$
     - ^feature-.*$
+    decorate: true
+    path_alias: kubesphere.io/kubesphere
+    spec:
+      containers:
+      - command:
+        - entrypoint
+        - make
+        - all
+        image: kubesphere/build-tools:master-2024-06-13T18-56-49
+        name: ""
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: "4"
+            memory: 2Gi
+
+  - name: pull-kubesphere-unit-test
+    labels:
+      preset-go-build-cache: "true"
+    always_run: true
+    branches:
+    - ^release-3.[4-9].*$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
@@ -55,8 +77,30 @@ presubmits:
     branches:
     - ^master$
     - ^release-[4-9].*$
-    - ^release-3.[4-9].*$
     - ^feature-.*$
+    decorate: true
+    path_alias: kubesphere.io/kubesphere
+    spec:
+      containers:
+      - command:
+        - entrypoint
+        - bash
+        - -e
+        - -c
+        - "make verify-all"
+        image: kubesphere/build-tools:master-2024-06-13T18-56-49
+        name: ""
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: "4"
+            memory: 2Gi
+
+  - name: pull-kubesphere-verify
+    always_run: true
+    branches:
+    - ^release-3.[4-9].*$
     decorate: true
     path_alias: kubesphere.io/kubesphere
     spec:
