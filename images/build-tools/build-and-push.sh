@@ -19,16 +19,17 @@ export DOCKER_CLI_EXPERIMENTAL=enabled
 
 CONTAINER_CLI=${CONTAINER_CLI:-docker}
 # Use buildx for CI by default, allow overriding for old clients or other tools like podman
-CONTAINER_BUILDER=${CONTAINER_BUILDER:-"buildx build"}
-GOLANG_IMAGE=${GOLANG_IMAGE:-"golang:1.20.7"}
+CONTAINER_BUILDER=${CONTAINER_BUILDER:-"build"}
+GOLANG_IMAGE=${GOLANG_IMAGE:-"golang:1.21"}
 HUB=${HUB:-"kubesphere"}
 DATE=$(date +%Y-%m-%dT%H-%M-%S)
 BRANCH=master
 VERSION="${BRANCH}-${DATE}"
 
-${CONTAINER_CLI} ${CONTAINER_BUILDER}  --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:${BRANCH}-latest" .
-
 if [[ -z "${DRY_RUN:-}" ]]; then
-  ${CONTAINER_CLI} push "${HUB}/build-tools:${VERSION}"
-  ${CONTAINER_CLI} push "${HUB}/build-tools:${BRANCH}-latest"
+  ${CONTAINER_CLI} ${CONTAINER_BUILDER} --push --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:${VERSION}" .
+  ${CONTAINER_CLI} ${CONTAINER_BUILDER} --push --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:master-latest" .
+else
+  ${CONTAINER_CLI} ${CONTAINER_BUILDER} --load --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:${VERSION}" .
+  ${CONTAINER_CLI} ${CONTAINER_BUILDER} --load --target build_tools --build-arg "GOLANG_IMAGE=${GOLANG_IMAGE}" --build-arg "VERSION=${VERSION}" -t "${HUB}/build-tools:master-latest" .
 fi
