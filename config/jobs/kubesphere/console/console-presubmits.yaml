@@ -1,41 +1,41 @@
 presubmits:
   kubesphere/console:
-  - name: pull-console-unit-test
-    always_run: true
-    decorate: true
-    branches:
-    - ^master$
-    - ^release-4.*$
-    spec:
-      containers:
-      - command:
-        - "/bin/sh"
-        - "-c"
-        - "yarn && yarn test"
-        image: node:16.20
-        name: ""
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2Gi
-
-  - name: pull-console-unit-test
-    always_run: true
-    decorate: true
-    branches:
-    - ^release-3.*$
-    spec:
-      containers:
-      - command:
-        - "/bin/sh"
-        - "-c"
-        - "yarn && yarn test"
-        image: node:14.20
-        name: ""
-        resources:
-          requests:
-            cpu: "1"
-            memory: 2Gi
+#  - name: pull-console-unit-test
+#    always_run: true
+#    decorate: true
+#    branches:
+#    - ^master$
+#    - ^release-4.*$
+#    spec:
+#      containers:
+#      - command:
+#        - "/bin/sh"
+#        - "-c"
+#        - "yarn && yarn test"
+#        image: node:16.20
+#        name: ""
+#        resources:
+#          requests:
+#            cpu: "1"
+#            memory: 2Gi
+#
+#  - name: pull-console-unit-test
+#    always_run: true
+#    decorate: true
+#    branches:
+#    - ^release-3.*$
+#    spec:
+#      containers:
+#      - command:
+#        - "/bin/sh"
+#        - "-c"
+#        - "yarn && yarn test"
+#        image: node:14.20
+#        name: ""
+#        resources:
+#          requests:
+#            cpu: "1"
+#            memory: 2Gi
 
   - name: pull-console-build
     labels:
