@@ -124,6 +124,7 @@ tide:
     - kubesphere/kubesphere-security-pack
     - kubesphere/image-sync-config
     - kubesphere/dev-guide
+    = kubesphere/kubectl
     labels:
     - lgtm
     - approved
