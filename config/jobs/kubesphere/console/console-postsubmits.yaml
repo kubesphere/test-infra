@@ -1,92 +1,58 @@
 postsubmits:
   kubesphere/console:
-  - name: pull-console-build-image
+    - name: pull-console-build-image
+      labels:
+        preset-docker-sock: "true"
+        preset-docker-credentials: "true"
+        preset-docker-multiarch: "true"
+      always_run: true
+      branches:
+        - ^release-3.[4-9].*$
+      skip_branches:
+        - l10n_master
+      decorate: true
+      spec:
+        containers:
+          - command:
+              - "/bin/sh"
+              - "-c"
+              - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
+            image: kubesphere/build-tools:master-latest
+            name: ""
+            resources:
+              requests:
+                cpu: "4"
+                memory: 4Gi
+              securityContext:
+                privileged: true
+
+periodics:
+  - interval: 24h
+    decorate: true
+    branches:
+      - ^release-3.[4-9].*$
+    extra_refs:
+      - org: kubesphere
+        repo: console
+        base_ref: master
+    name: kubesphere-console-periodic-build-image
     labels:
       preset-docker-sock: "true"
       preset-docker-credentials: "true"
       preset-docker-multiarch: "true"
-    always_run: true
-    branches:
-    - ^master$
-    - release-*
-    - v*
-    skip_branches:
-    - l10n_master
-    decorate: true
     spec:
       containers:
-      - command:
-        - "/bin/sh"
-        - "-c"
-        - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-        image: kubesphere/build-tools:master-latest
-        name: ""
-        resources:
-          requests:
-            cpu: "4"
-            memory: 4Gi
+        - image: kubesphere/build-tools:master-latest
+          command:
+            - "/bin/sh"
+            - "-c"
+            - export REPO=kubespheredev TAG=nightly-$(date "+%Y%m%d") && make container-cross-push
+          # docker-in-docker needs privileged mode
           securityContext:
-            privileged: true
-
-periodics:
-- interval: 24h
-  decorate: true
-  branches: master
-  extra_refs:
-  - org: kubesphere
-    repo: console
-    base_ref: master
-  name: kubesphere-console-periodic-build-image
-  labels:
-    preset-docker-sock: "true"
-    preset-docker-credentials: "true"
-    preset-docker-multiarch: "true"
-  spec:
-    containers:
-    - image: kubesphere/build-tools:master-latest
-      command:
-      - "/bin/sh"
-      - "-c"
-      - export REPO=kubespheredev TAG=nightly-$(date "+%Y%m%d") && make container-cross-push
-      # docker-in-docker needs privileged mode
-      securityContext:
-        priviledged: true
-      resources:
-        requests:
-          cpu: 1
-          memory: "2Gi"
-  annotations:
-    description: "Periodic builds and pushs"
-
-# - interval: 1h
-#   decorate: true
-#   branches: l10n_master
-#   extra_refs:
-#   - org: kubesphere
-#     repo: console
-#     base_ref: l10n_master
-#   name: kubesphere-console-periodic-update-l10n-environment
-#   labels:
-#     preset-docker-sock: "true"
-#     preset-docker-credentials: "true"
-#     preset-preivew-cluster-kubeconfig: "true"
-#   spec:
-#     containers:
-#     - image: kubesphere/build-tools-lite:master-latest
-#       command: ["/bin/bash", "-c"]
-#       args:
-#       - set -eux
-#         set -o errexit;
-#         set -o nounset;
-#         REPO=kubespheredev TAG=l10n make container-push;
-#         kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system set image deployment/ks-console-l10n ks-console=kubespheredev/ks-console:l10n;
-#         kubectl --kubeconfig /home/.kube/preview-kubeconfig -n kubesphere-system rollout restart deployment ks-console-l10n;
-#       # docker-in-docker needs privileged mode
-#       securityContext:
-#         priviledged: true
-#       resources:
-#         requests:
-#           cpu: 2
-#           memory: "4Gi"
-#   annotations:
-#     description: "Periodic builds and update localization environment according to branch l10n_master"
+            priviledged: true
+          resources:
+            requests:
+              cpu: 1
+              memory: "2Gi"
+    annotations:
+      description: "Periodic builds and pushs"
