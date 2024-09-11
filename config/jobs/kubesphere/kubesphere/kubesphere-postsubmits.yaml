@@ -1,199 +1,133 @@
 postsubmits:
   kubesphere/kubesphere:
-  - name: pull-kubesphere-build-image
-    labels:
-      preset-go-build-cache: "true"
-      preset-docker-sock: "true"
-      preset-docker-credentials: "true"
-      preset-docker-multiarch: "true"
-    always_run: true
-    branches:
-    - ^master$
-    - ^release-[4-9].*$
-    decorate: true
-    path_alias: kubesphere.io/kubesphere
-    spec:
-      containers:
-      - command:
-        - entrypoint
-        - bash
-        - -e
-        - -c
-        - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-        image: kubesphere/build-tools:master-2024-06-13T18-56-49
-        name: ""
-        resources:
-          limits:
-            memory: 8Gi
-          requests:
-            cpu: "4"
-            memory: 2Gi
-          securityContext:
-            privileged: true
+    - name: pull-kubesphere-build-image
+      labels:
+        preset-go-build-cache: "true"
+        preset-docker-sock: "true"
+        preset-docker-credentials: "true"
+        preset-docker-multiarch: "true"
+      always_run: true
+      branches:
+        - ^release-3.[4-9].*$
+      decorate: true
+      path_alias: kubesphere.io/kubesphere
+      spec:
+        containers:
+          - command:
+              - entrypoint
+              - bash
+              - -e
+              - -c
+              - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
+            image: kubesphere/build-tools:master-2023-09-04T10-24-16
+            name: ""
+            resources:
+              limits:
+                memory: 8Gi
+              requests:
+                cpu: "4"
+                memory: 2Gi
+              securityContext:
+                privileged: true
 
-  - name: pull-kubesphere-build-image
-    labels:
-      preset-go-build-cache: "true"
-      preset-docker-sock: "true"
-      preset-docker-credentials: "true"
-      preset-docker-multiarch: "true"
-    always_run: true
-    branches:
-    - ^release-3.[4-9].*$
-    decorate: true
-    path_alias: kubesphere.io/kubesphere
-    spec:
-      containers:
-      - command:
-        - entrypoint
-        - bash
-        - -e
-        - -c
-        - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-        image: kubesphere/build-tools:master-2023-09-04T10-24-16
-        name: ""
-        resources:
-          limits:
-            memory: 8Gi
-          requests:
-            cpu: "4"
-            memory: 2Gi
-          securityContext:
-            privileged: true
-
-  - name: pull-kubesphere-build-image
-    labels:
-      preset-go-build-cache: "true"
-      preset-docker-sock: "true"
-      preset-docker-credentials: "true"
-      preset-docker-multiarch: "true"
-    always_run: true
-    branches:
-    - ^release-[1-2].*$
-    - ^release-3.[0-3].*$
-    - v3*
-    decorate: true
-    path_alias: kubesphere.io/kubesphere
-    spec:
-      containers:
-      - command:
-        - entrypoint
-        - bash
-        - -e
-        - -c
-        - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-        image: kubesphere/build-tools:master-2021-06-17T12-38-31
-        name: ""
-        resources:
-          limits:
-            memory: 8Gi
-          requests:
-            cpu: "4"
-            memory: 2Gi
-          securityContext:
-            privileged: true
+    - name: pull-kubesphere-build-image
+      labels:
+        preset-go-build-cache: "true"
+        preset-docker-sock: "true"
+        preset-docker-credentials: "true"
+        preset-docker-multiarch: "true"
+      always_run: true
+      branches:
+        - ^release-[1-2].*$
+        - ^release-3.[0-3].*$
+        - v3*
+      decorate: true
+      path_alias: kubesphere.io/kubesphere
+      spec:
+        containers:
+          - command:
+              - entrypoint
+              - bash
+              - -e
+              - -c
+              - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
+            image: kubesphere/build-tools:master-2021-06-17T12-38-31
+            name: ""
+            resources:
+              limits:
+                memory: 8Gi
+              requests:
+                cpu: "4"
+                memory: 2Gi
+              securityContext:
+                privileged: true
 
 periodics:
-- interval: 24h
-  decorate: true
-  branches:
-  - ^master$
-  - ^release-[4-9].*$
-  extra_refs:
-  - org: kubesphere
-    repo: kubesphere
-    base_ref: master
-    path_alias: kubesphere.io/kubesphere
-  name: kubesphere-periodic-build-image
-  labels:
-    preset-go-build-cache: "true"
-    preset-docker-sock: "true"
-    preset-docker-credentials: "true"
-    preset-docker-multiarch: "true"
-  spec:
-    containers:
-    - image: kubesphere/build-tools:master-2024-06-13T18-56-49
-      command:
-      - entrypoint
-      - bash
-      - -e
-      - -c
-      - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-      # docker-in-docker needs privileged mode
-      securityContext:
-        priviledged: true
-      resources:
-        requests:
-          cpu: 2
-          memory: "2Gi"
-  annotations:
-    description: "Periodic builds and pushs"
+  - interval: 24h
+    decorate: true
+    branches:
+      - ^release-3.[4-9].*$
+    extra_refs:
+      - org: kubesphere
+        repo: kubesphere
+        base_ref: master
+        path_alias: kubesphere.io/kubesphere
+    name: kubesphere-periodic-build-image-historical
+    labels:
+      preset-go-build-cache: "true"
+      preset-docker-sock: "true"
+      preset-docker-credentials: "true"
+      preset-docker-multiarch: "true"
+    spec:
+      containers:
+        - image: kubesphere/build-tools:master-2023-09-04T10-24-16
+          command:
+            - entrypoint
+            - bash
+            - -e
+            - -c
+            - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
+          # docker-in-docker needs privileged mode
+          securityContext:
+            priviledged: true
+          resources:
+            requests:
+              cpu: 2
+              memory: "2Gi"
+    annotations:
+      description: "Periodic builds and pushs"
 
-- interval: 24h
-  decorate: true
-  branches:
-  - ^release-3.[4-9].*$
-  extra_refs:
-  - org: kubesphere
-    repo: kubesphere
-    base_ref: master
-    path_alias: kubesphere.io/kubesphere
-  name: kubesphere-periodic-build-image-historical
-  labels:
-    preset-go-build-cache: "true"
-    preset-docker-sock: "true"
-    preset-docker-credentials: "true"
-    preset-docker-multiarch: "true"
-  spec:
-    containers:
-    - image: kubesphere/build-tools:master-2023-09-04T10-24-16
-      command:
-      - entrypoint
-      - bash
-      - -e
-      - -c
-      - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-      # docker-in-docker needs privileged mode
-      securityContext:
-        priviledged: true
-      resources:
-        requests:
-          cpu: 2
-          memory: "2Gi"
-  annotations:
-    description: "Periodic builds and pushs"
-
-- interval: 24h
-  decorate: true
-  branches:
-  - ^release-[1-2].*$
-  - ^release-3.[0-3].*$
-  extra_refs:
-  - org: kubesphere
-    repo: kubesphere
-    base_ref: master
-    path_alias: kubesphere.io/kubesphere
-  name: kubesphere-periodic-build-image-legacy
-  labels:
-    preset-go-build-cache: "true"
-    preset-docker-sock: "true"
-    preset-docker-credentials: "true"
-    preset-docker-multiarch: "true"
-  spec:
-    containers:
-    - image: kubesphere/build-tools:master-2021-06-17T12-38-31
-      command:
-      - entrypoint
-      - bash
-      - -e
-      - -c
-      - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
-      # docker-in-docker needs privileged mode
-      securityContext:
-        priviledged: true
-      resources:
-        requests:
-          cpu: 2
-          memory: "2Gi"
-  annotations:
-    description: "Periodic builds and pushs"
+  - interval: 24h
+    decorate: true
+    branches:
+      - ^release-[1-2].*$
+      - ^release-3.[0-3].*$
+    extra_refs:
+      - org: kubesphere
+        repo: kubesphere
+        base_ref: master
+        path_alias: kubesphere.io/kubesphere
+    name: kubesphere-periodic-build-image-legacy
+    labels:
+      preset-go-build-cache: "true"
+      preset-docker-sock: "true"
+      preset-docker-credentials: "true"
+      preset-docker-multiarch: "true"
+    spec:
+      containers:
+        - image: kubesphere/build-tools:master-2021-06-17T12-38-31
+          command:
+            - entrypoint
+            - bash
+            - -e
+            - -c
+            - "REPO=kubespheredev TAG=${PULL_BASE_REF} make container-cross-push"
+          # docker-in-docker needs privileged mode
+          securityContext:
+            priviledged: true
+          resources:
+            requests:
+              cpu: 2
+              memory: "2Gi"
+    annotations:
+      description: "Periodic builds and pushs"
