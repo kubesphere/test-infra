@@ -153,6 +153,10 @@ plugins:
 
 external_plugins:
   kubesphere:
+  - name: cross-repo-cherrypicker
+    events:
+    - issue_comment
+    - pull_request
   - name: cherrypicker
     events:
     - issue_comment
